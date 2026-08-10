@@ -4,6 +4,7 @@ node_modules/
 out/
 build/
 dist/
+!dist/claude-plugin/
 coverage/
 
 # AG Kit temporary and backup data
@@ -22,5 +23,5 @@ __pycache__/
 /ag-kit-doc/
 /tests/
 /others/
-/.claude/
 /demo/
+

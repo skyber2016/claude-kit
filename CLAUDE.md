@@ -4,17 +4,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-AG Kit is an Antigravity-first AI agent engineering kit. The product is the `.agents/` workspace contract itself (rules, skills, agents, workflows, memory, hooks) — Markdown + JSON consumed by the Google Antigravity runtime, not compiled code. Three deliverables live in one repo:
+AG Kit / Claude Kit is an AI agent engineering kit designed to support both Google Antigravity and Claude Code runtimes. The product is the workspace contract itself—Markdown and JSON files that define rules, skills, agents, workflows, and memory, rather than compiled code.
 
-- `.agents/` — the toolkit: 20 specialist agents (`agent/`), ~50 skills (`skills/`), 13 slash-command workflows (`workflows/`), 6 rules (`rules/`), persistent memory templates (`memory/`), plus the Antigravity runtime layer (`antigravity.json` contract, `hooks.json` PreToolUse safety gate, `hooks/*.mjs` tooling, JSON schemas).
-- `cli/` — published npm package `@vudovn/ag-kit` (Node ≥18, ESM). Installs the kit into user projects via `giget`. Entry: `cli/bin/index.js`, managed-tree logic in `cli/lib/managed-tree.js`.
-- `web/` — docs site (Next.js 16 + MDX + Tailwind 4, React 19). Content data lives in JSON catalogs under `web/src`.
+Three deliverables live in one repo:
+- **`.agents/` / `.claude/`** — the toolkit, containing 20 specialist agents, 47 skills, 13 slash-command workflows, rules, persistent memory templates, and runtime layers.
+- **`cli/`** — published npm package `@vudovn/ag-kit` (Node ≥18, ESM). Installs the kit into user projects.
+- **`web/`** — docs site (Next.js 16 + MDX + Tailwind 4, React 19).
 
-Python ≥3.10 (with PyYAML) runs the toolkit validators; Node ≥22 runs the Antigravity tooling.
+## Dual Structure
+
+The toolkit relies on a dual structure to support different runtimes:
+- **`.claude/`**: Contains Claude Code native configurations (rules, custom commands, hooks, and settings like `settings.json`).
+- **`.agents/`**: Contains the core toolkit content (agents, skills, memory files, utility scripts, and schemas) which are consumed by runtimes.
+
+## Agent/Skill Loading Protocol
+
+When working in this repo or applying the kit, follow this protocol:
+1. **Session Start**: ALWAYS read `.agents/memory/MEMORY.md` to load persistent project conventions and decisions.
+2. **Before Implementation**: Identify the most relevant specialist agent from the `.agents/agent/` directory based on the task.
+3. **Load Skills**: Read the agent's Markdown file, check its YAML frontmatter under `skills:`, and load those specific skills.
+4. **Announce**: Explicitly announce which agent and skills are being used (e.g., `🤖 Applying knowledge of @[agent]...`).
 
 ## Commands
 
-All from repo root unless noted.
+All commands are run from the repo root unless noted otherwise:
 
 ```bash
 # Toolkit (.agents/) — run after ANY change to managed components
@@ -22,44 +35,37 @@ npm run generate:agents      # regenerate manifest.json, manifest.lock.json, DEP
 npm run check:agents         # manifest --check + graph --check + validate_kit.py (what CI runs)
 npm run test:toolkit         # python -m unittest discover -s .agents/scripts/tests -v
 
-# Antigravity runtime layer
+# Runtime layers
 npm run check:antigravity    # doctor: validates contract, hooks, schemas
 npm run test:antigravity     # node --test .agents/hooks/tests/antigravity.test.mjs
 npm run build:antigravity-plugin
 
 # CLI
-npm run test:cli             # or: cd cli && node --test test/*.test.js
+npm run test:cli             # run CLI tests
 node --test cli/test/managed-tree.test.js   # single test file
 
-# Web (deps installed per-package: npm ci in cli/ and web/)
+# Web
 npm run lint:web
 npm run typecheck:web
 npm run build:web            # next build --webpack (not turbopack)
 ```
 
-Single Python test: `python -m unittest .agents.scripts.tests.test_toolkit -v` won't work due to path; use `python -m unittest discover -s .agents/scripts/tests -k <pattern> -v`.
+## The Managed Component Registry
 
-## The managed component registry (critical)
+Any edit to a managed component (files in `agent/`, `skills/`, `workflows/`, `rules/`, hooks, schemas) **must** be followed by `npm run generate:agents`. CI runs `check:agents` and will fail if hashes mismatch. Never hand-edit `manifest.json`, `manifest.lock.json`, or `DEPENDENCY_GRAPH.md`.
 
-Any edit to a managed component (files in `.agents/agent|skills|workflows|rules`, hooks, schemas) **must** be followed by `npm run generate:agents`, or `check:agents` and CI fail on hash mismatch. Never hand-edit `manifest.json`, `manifest.lock.json`, or `DEPENDENCY_GRAPH.md` — all generated.
+## Component Conventions
 
-Dual-track versioning:
-- Toolkit releases: **CalVer** `YYYY.M.D` in `.agents/VERSION`.
-- Individual components: **SemVer** in their Markdown frontmatter. Bump the component's frontmatter version when changing it.
+- **Frontmatter**: Agents, skills, workflows, and rules are Markdown with YAML frontmatter (`name`, `description`, `version`, `tools`/`dependencies`). Validated by `validate_kit.py`.
+- **Progressive Loading**: Skills use "Selective Reading" (progressive/conditional loading). A short always-loaded core with deeper sections loaded on demand.
+- **Dependencies**: Cross-component dependencies are declared in frontmatter and materialize in the dependency graph.
 
-## Component conventions
+## Safety Hook
 
-- Agents, skills, workflows, and rules are Markdown with YAML frontmatter (`name`, `description`, `version`, plus `tools`/`dependencies` where applicable). Frontmatter shape is validated by `validate_kit.py` — match existing files in the same directory.
-- Skills use progressive/conditional loading ("Selective Reading"): a short always-loaded core with deeper sections loaded on demand. Keep new skill content in that shape.
-- Cross-component dependencies are declared in frontmatter and materialize in the generated dependency graph; a dangling dependency fails `check:agents`.
-- The native PreToolUse hook (`hooks.json` + `validate-tool-call.mjs`) is deliberately narrow: blocks root-filesystem deletion, drive formatting, raw-disk writes only. Don't broaden it into a general linter.
+The native PreToolUse hook (configured in `.claude/settings.json` mapping to `validate-tool-call.mjs`) is deliberately narrow: it blocks root-filesystem deletion, drive formatting, and raw-disk writes. Do not broaden it into a general linter.
 
-## Release
+## Versioning
 
-- Version is CalVer and must be synced across **three** `package.json` files (root, `cli/`, `web/`) plus `.agents/VERSION`. `cli/test/release-safety.test.js` guards this.
-- npm publish runs via `.github/workflows/publish.yml`; CI (`ci.yml`) runs toolkit validation, CLI tests + `npm pack --dry-run` + prod audit, and web lint/typecheck/build/audit. `antigravity.yml` runs doctor, hook tests, and plugin build.
-
-## Web notes
-
-- `next build --webpack` is intentional: the MDX plugin config breaks under Turbopack unless plugins are referenced by string name (see `web/next.config.ts`).
-- Docs content is driven by JSON catalog data under `web/src`, not by scanning `.agents/` at build time — update the catalogs when components change.
+Dual-track versioning is used:
+- **Toolkit releases**: **CalVer** `YYYY.M.D` in `.agents/VERSION`.
+- **Individual components**: **SemVer** in their Markdown frontmatter. Bump the frontmatter version when changing a component.
