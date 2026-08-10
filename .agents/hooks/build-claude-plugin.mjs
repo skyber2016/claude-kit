@@ -115,7 +115,9 @@ export function buildPlugin(root, output) {
   return manifest;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+import url from 'node:url';
+
+if (import.meta.url === url.pathToFileURL(process.argv[1]).href) {
   try {
     const options = parseArgs(process.argv.slice(2));
     const manifest = buildPlugin(options.root, options.output);
