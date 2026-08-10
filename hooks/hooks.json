@@ -1,0 +1,13 @@
+{
+  "hooks": [
+    {
+      "matcher": "Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "echo '$INPUT' | node ${CLAUDE_PLUGIN_ROOT}/hooks/validate-tool-call.mjs"
+        }
+      ]
+    }
+  ]
+}
