@@ -1,0 +1,11 @@
+{
+  "name": "claude-kit-marketplace",
+  "description": "AG Kit / Claude Kit — AI agent engineering kit for Claude Code",
+  "plugins": [
+    {
+      "name": "claude-kit",
+      "description": "20 specialist agents, 47 skills, 13 slash commands, orchestration, and safety hooks for Claude Code.",
+      "source": "."
+    }
+  ]
+}
