@@ -1,7 +1,7 @@
-﻿---
+---
 name: wf_brainstorm
-description: Structured brainstorming for projects and features. Explores multiple options before implementation.
-version: 1.0.0
+description: Structured brainstorming for projects and features. Explores multiple options before implementation. Auto-detects OpenSpec for SDD mode.
+version: 2.0.0
 requires_agents: project-planner
 requires_skills: brainstorming
 artifact_outputs: discovery-notes, decision-summary
@@ -13,15 +13,23 @@ $ARGUMENTS
 
 ---
 
-## Purpose
+## 🔍 OpenSpec Detection (MANDATORY FIRST STEP)
 
-This command activates BRAINSTORM mode for structured idea exploration. Use when you need to explore options before committing to an implementation.
+Before starting, detect if OpenSpec is available:
+
+```bash
+test -d openspec/ && echo "SDD_MODE" || echo "CLASSIC_MODE"
+```
+
+Announce the mode to user:
+- **SDD_MODE**: `"🔍 OpenSpec detected → SDD explore mode (codebase-grounded, can scaffold specs)"`
+- **CLASSIC_MODE**: `"🧠 Classic brainstorm mode"`
 
 ---
 
-## Behavior
+## Behavior — CLASSIC_MODE (no OpenSpec)
 
-When `/wf_brainstorm` is triggered:
+When `/wf_brainstorm` is triggered without OpenSpec:
 
 1. **Understand the goal**
    - What problem are we solving?
@@ -37,9 +45,7 @@ When `/wf_brainstorm` is triggered:
    - Summarize tradeoffs
    - Give a recommendation with reasoning
 
----
-
-## Output Format
+### Output Format (Classic)
 
 ```markdown
 ## 🧠 Brainstorm: [Topic]
@@ -64,29 +70,7 @@ When `/wf_brainstorm` is triggered:
 ---
 
 ### Option B: [Name]
-[Description]
-
-✅ **Pros:**
-- [benefit 1]
-
-❌ **Cons:**
-- [drawback 1]
-- [drawback 2]
-
-📊 **Effort:** Low | Medium | High
-
----
-
-### Option C: [Name]
-[Description]
-
-✅ **Pros:**
-- [benefit 1]
-
-❌ **Cons:**
-- [drawback 1]
-
-📊 **Effort:** Low | Medium | High
+...
 
 ---
 
@@ -96,6 +80,37 @@ When `/wf_brainstorm` is triggered:
 
 What direction would you like to explore?
 ```
+
+---
+
+## Behavior — SDD_MODE (OpenSpec detected)
+
+When `/wf_brainstorm` is triggered with OpenSpec present:
+
+1. **Load context**
+   - Read `openspec/config.yaml` for project context
+   - Run `openspec list --json` to check active changes
+   - Investigate the actual codebase: read relevant source files, search patterns, map architecture
+
+2. **Explore with grounding**
+   - Read the `@[skills/openspec-explore]` skill for full explore protocol
+   - Be curious, not prescriptive — open threads, don't interrogate
+   - Use ASCII diagrams liberally for architecture visualization
+   - Follow interesting threads, pivot when new information emerges
+   - Ground discussions in actual code, not just theory
+
+3. **Generate options with trade-offs**
+   - Same as Classic: at least 3 approaches with pros/cons
+   - But additionally: show concrete impact on existing codebase
+   - Reference actual files, patterns, and dependencies found
+
+4. **Offer to scaffold spec** (SDD exclusive)
+   - After user picks a direction, ask:
+     ```
+     "Bạn đã chọn hướng đi. Muốn tôi tạo spec cho change này không?
+      → /wf_plan [topic] để tạo structured spec (proposal + tasks)
+      → Hoặc tiếp tục explore thêm"
+     ```
 
 ---
 
@@ -116,3 +131,4 @@ What direction would you like to explore?
 - **Visual when helpful** - use diagrams for architecture
 - **Honest tradeoffs** - don't hide complexity
 - **Defer to user** - present options, let them decide
+- **Grounded (SDD)** - explore the actual codebase when relevant

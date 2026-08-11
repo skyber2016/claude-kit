@@ -1,9 +1,9 @@
-﻿---
+---
 name: wf_test
-description: Test generation and test running command. Creates and executes tests for code.
-version: 1.0.0
+description: Test generation and execution. For projects without unit tests, generates API test scripts from SRS using curl.
+version: 2.0.0
 requires_agents: test-engineer
-requires_skills: testing-patterns, verify-changes
+requires_skills: testing-patterns, verify-changes, api-test-runner
 artifact_outputs: test-report
 ---
 
@@ -32,9 +32,34 @@ This command generates tests, runs existing tests, or checks test coverage.
 
 ## Behavior
 
-### Generate Tests
+### 🔍 Test Framework Detection (FIRST STEP)
 
-When asked to test a file or feature:
+Detect what test infrastructure exists:
+
+```bash
+# Unit test framework?
+test -f pom.xml && grep -q "junit\|mockito" pom.xml && echo "JUNIT"
+test -f package.json && grep -q "jest\|vitest\|mocha" package.json && echo "JS_TEST"
+
+# API test scripts?
+ls .wiki/*/api-tests.sh 2>/dev/null && echo "API_TESTS_EXIST"
+
+# SRS available?
+ls .wiki/*/srs.md 2>/dev/null && echo "SRS_AVAILABLE"
+```
+
+| Detection Result | Action |
+|---|---|
+| JUNIT / JS_TEST | Run existing test framework |
+| API_TESTS_EXIST | Run existing API test scripts |
+| SRS_AVAILABLE + no tests | Generate API test scripts from SRS using `@[skills/api-test-runner]` |
+| Nothing found | Ask user what to test |
+
+---
+
+### Generate Tests — With Unit Test Framework
+
+When unit test framework exists:
 
 1. **Analyze the code**
    - Identify functions and methods
@@ -101,11 +126,39 @@ Total: 15 tests (14 passed, 1 failed)
 ## Examples
 
 ```
-/wf_test src/services/auth.service.ts
-/wf_test user registration flow
-/wf_test coverage
-/wf_test fix failed tests
+/wf_test                              - Run all tests
+/wf_test ngan-hang-thu-huong          - Generate/run API tests from SRS
+/wf_test src/services/auth.service.ts - Generate unit tests for specific file
+/wf_test coverage                     - Show test coverage report
 ```
+
+---
+
+### Generate Tests — Without Unit Test Framework (API Projects)
+
+When NO unit test framework exists but SRS is available:
+
+1. **Read SRS** from `.wiki/<name>/srs.md`
+2. **Read `@[skills/api-test-runner]`** for full generation protocol
+3. **Map SRS to test cases:**
+
+   | SRS Section | Test Cases |
+   |---|---|
+   | Basic Flow (BF1-BF4) | 1 success test per flow |
+   | Business Rules (BR1-BR10) | 1 negative test per rule |
+   | Required Fields | 1 missing-field test per required field |
+   | Error Messages | Assert exact error text from SRS |
+
+4. **Generate files:**
+   - `.wiki/<name>/api-tests.http` (human-readable documentation)
+   - `.wiki/<name>/api-tests.sh` (executable curl script)
+
+5. **Run the generated script:**
+   ```bash
+   bash .wiki/<name>/api-tests.sh http://localhost:8080 admin admin123
+   ```
+
+6. **Report results** in standard format
 
 ---
 

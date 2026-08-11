@@ -10,5 +10,6 @@ Use the packaged AG Kit components as follows:
 6. The bundled MCP config is an example only. Never activate placeholder credentials.
 7. The bundled `PreToolUse` hook blocks only clearly destructive root-disk operations and does not replace Claude Code's native permission controls.
 8. Copy `settings.json` to your project's `.claude/settings.json` to enable hooks and MCP servers.
+9. **OpenSpec SDD Integration:** Commands `/wf_brainstorm`, `/wf_plan`, `/wf_create`, `/wf_enhance` auto-detect `openspec/` directory. If present, they use Spec-Driven Development (structured artifacts, change tracking). If absent, they work in classic mode. Run `openspec init --tools claude` in your project to enable SDD.
 
 Prefer the `/orchestrate` or `/coordinate` command for complex multi-domain work. Use at least three independent specialists only when their tasks can be separated cleanly, then synthesize and verify the result.
