@@ -158,7 +158,74 @@ When NO unit test framework exists but SRS is available:
    bash .wiki/<name>/api-tests.sh http://localhost:8080 admin admin123
    ```
 
-6. **Report results** in standard format
+6. **Generate report** → jump to **Report Generation** section below
+
+---
+
+## 📝 Report Generation (MANDATORY after every test run)
+
+After ANY test execution (unit test, API test, or verification), generate `.wiki/<name>/report.md`.
+
+**If `<name>` is not available** (e.g., `/wf_test` without arguments), use the most recent `.wiki/*/` folder by modification time.
+
+### Report template:
+
+```markdown
+# Test Report: <Name>
+
+> Generated: YYYY-MM-DD HH:mm:ss
+> Runner: [JUnit | API Test Script | Manual Verification]
+> Triggered by: /wf_test <arguments>
+
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| Total Tests | X |
+| ✅ Passed | X |
+| ❌ Failed | X |
+| ⏭️ Skipped | X |
+| Pass Rate | XX.X% |
+| Duration | X.Xs |
+
+## Results
+
+| # | Test Case | Status | Details |
+|---|-----------|--------|---------|
+| 1 | Login | ✅ Pass | HTTP 200 |
+| 2 | BF1 - Search All | ✅ Pass | HTTP 200, returned 5 records |
+| 3 | BF2 - Create | ✅ Pass | HTTP 201 |
+| 4 | BR2 - Duplicate bankCode | ✅ Pass | HTTP 400, "Mã ngân hàng đã tồn tại" |
+| 5 | BR9 - Missing CITAD+NAPAS | ❌ Fail | HTTP 200 (expected 400) |
+
+## Failed Tests Detail
+
+### ❌ BR9 - Missing CITAD+NAPAS
+- **Expected:** HTTP 400 with error message about CITAD
+- **Actual:** HTTP 200 (created without validation)
+- **Possible cause:** Missing validation in CreateBeneBankRequest
+- **Suggested fix:** Add @ValidCitadOrNapas constraint
+
+## Environment
+
+| Key | Value |
+|-----|-------|
+| Base URL | http://localhost:8080 |
+| Auth | Session (JSESSIONID) |
+| User | admin |
+| Profile | local |
+
+---
+*Previous reports are archived below*
+```
+
+### Report behavior:
+
+1. **First run:** Create new `report.md`
+2. **Subsequent runs:** Prepend new report at the top, move previous report under `## History` section with date header
+3. **Update `.wiki/<name>/README.md`** status:
+   - All passed → `## Status: ✅ Tests Passed (X/X)`
+   - Has failures → `## Status: ❌ Tests Failed (X/X passed)`
 
 ---
 

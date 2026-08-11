@@ -156,11 +156,11 @@
     },
     {
       "path": "commands/wf_test.md",
-      "sha256": "555db5a4f375a631520c53ef2445d6c4070308ba2ab6bfd2461208d5cd39aab0"
+      "sha256": "be7c3b1865c98c427f7b86187216cd0fe1a0c78fe4a60f1599c2b452cb584f9e"
     },
     {
       "path": "commands/wf_verify.md",
-      "sha256": "3dd44a1ec5466cb791ff5cf80b6deb6bc77b672cb864fd6b3dcface3c07db950"
+      "sha256": "e45bcac10967d32fb081f9e23315a2225c163d1334088949d33a5a12854e0e51"
     },
     {
       "path": "hooks/hooks.json",

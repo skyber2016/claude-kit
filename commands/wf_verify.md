@@ -90,3 +90,41 @@ RULES:
 /wf_verify the login endpoint handles expired tokens
 /wf_verify build passes after refactoring
 ```
+
+---
+
+## 📝 Report Generation
+
+After verification, append results to `.wiki/<name>/report.md` (same file used by `/wf_test`).
+
+- If `<name>` is provided in arguments, use that folder
+- If not, detect from most recent changes or most recent `.wiki/*/` folder
+- If no `.wiki/` folder exists, skip report generation (just output to console)
+
+### Format:
+
+```markdown
+# Verification Report: <Name>
+
+> Generated: YYYY-MM-DD HH:mm:ss
+> Runner: Verification
+> Triggered by: /wf_verify <arguments>
+
+## Summary
+
+| Check | Status | Evidence |
+|-------|--------|----------|
+| Build (mvn compile) | ✅ Pass | 0 errors, 0 warnings |
+| API: POST /api/bene-banks | ✅ Pass | HTTP 201 |
+| API: GET /api/bene-banks | ✅ Pass | HTTP 200, 5 records |
+| Validation: duplicate bankCode | ✅ Pass | HTTP 400 |
+| Runtime: server startup | ✅ Pass | Started in 3.2s |
+
+## Not Verified
+- [ ] UI rendering (requires manual check)
+- [ ] Performance under load
+```
+
+### Behavior:
+- Prepend to existing `report.md` if it exists (keep test report history)
+- Update `.wiki/<name>/README.md` status accordingly
