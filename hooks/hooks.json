@@ -1,13 +1,15 @@
 {
-  "hooks": [
-    {
-      "matcher": "Bash",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "echo '$INPUT' | node ${CLAUDE_PLUGIN_ROOT}/hooks/validate-tool-call.mjs"
-        }
-      ]
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '$INPUT' | node ${CLAUDE_PLUGIN_ROOT}/hooks/validate-tool-call.mjs"
+          }
+        ]
+      }
+    ]
+  }
 }
