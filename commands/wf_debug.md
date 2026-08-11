@@ -1,4 +1,4 @@
----
+﻿---
 name: debug
 description: Debugging command. Activates DEBUG mode for systematic problem investigation.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: systematic-debugging, verify-changes
 artifact_outputs: root-cause, fix-summary, verification-report
 ---
 
-# /debug - Systematic Problem Investigation
+# /wf_debug - Systematic Problem Investigation
 
 $ARGUMENTS
 
@@ -21,7 +21,7 @@ This command activates DEBUG mode for systematic investigation of issues, errors
 
 ## Behavior
 
-When `/debug` is triggered:
+When `/wf_debug` is triggered:
 
 1. **Gather information**
    - Error message
@@ -92,10 +92,10 @@ When `/debug` is triggered:
 ## Examples
 
 ```
-/debug login not working
-/debug API returns 500
-/debug form doesn't submit
-/debug data not saving
+/wf_debug login not working
+/wf_debug API returns 500
+/wf_debug form doesn't submit
+/wf_debug data not saving
 ```
 
 ---

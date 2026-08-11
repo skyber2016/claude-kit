@@ -1,4 +1,4 @@
----
+﻿---
 name: coordinate
 description: Advanced multi-agent coordination with parallel dispatch and synthesis. Use for complex tasks requiring multiple specialist perspectives.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: coordinator-mode, parallel-agents
 artifact_outputs: coordination-plan, phase-status
 ---
 
-# /coordinate — Advanced Multi-Agent Coordination
+# /wf_coordinate — Advanced Multi-Agent Coordination
 
 $ARGUMENTS
 

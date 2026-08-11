@@ -1,4 +1,4 @@
----
+﻿---
 name: verify
 description: Verify code changes work by running them. Proves through execution, not just inspection.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: verify-changes, lint-and-validate
 artifact_outputs: verification-report
 ---
 
-# /verify — Prove Code Works
+# /wf_verify — Prove Code Works
 
 $ARGUMENTS
 
@@ -70,8 +70,8 @@ RULES:
 ## Usage Examples
 
 ```
-/verify
-/verify the login endpoint handles expired tokens
-/verify build passes after refactoring
-/verify the new component renders correctly
+/wf_verify
+/wf_verify the login endpoint handles expired tokens
+/wf_verify build passes after refactoring
+/wf_verify the new component renders correctly
 ```

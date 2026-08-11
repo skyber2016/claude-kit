@@ -1,4 +1,4 @@
----
+﻿---
 name: test
 description: Test generation and test running command. Creates and executes tests for code.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: testing-patterns, verify-changes
 artifact_outputs: test-report
 ---
 
-# /test - Test Generation and Execution
+# /wf_test - Test Generation and Execution
 
 $ARGUMENTS
 
@@ -22,10 +22,10 @@ This command generates tests, runs existing tests, or checks test coverage.
 ## Sub-commands
 
 ```
-/test                - Run all tests
-/test [file/feature] - Generate tests for specific target
-/test coverage       - Show test coverage report
-/test watch          - Run tests in watch mode
+/wf_test                - Run all tests
+/wf_test [file/feature] - Generate tests for specific target
+/wf_test coverage       - Show test coverage report
+/wf_test watch          - Run tests in watch mode
 ```
 
 ---
@@ -101,10 +101,10 @@ Total: 15 tests (14 passed, 1 failed)
 ## Examples
 
 ```
-/test src/services/auth.service.ts
-/test user registration flow
-/test coverage
-/test fix failed tests
+/wf_test src/services/auth.service.ts
+/wf_test user registration flow
+/wf_test coverage
+/wf_test fix failed tests
 ```
 
 ---

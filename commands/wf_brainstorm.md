@@ -1,4 +1,4 @@
----
+﻿---
 name: brainstorm
 description: Structured brainstorming for projects and features. Explores multiple options before implementation.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: brainstorming
 artifact_outputs: discovery-notes, decision-summary
 ---
 
-# /brainstorm - Structured Idea Exploration
+# /wf_brainstorm - Structured Idea Exploration
 
 $ARGUMENTS
 
@@ -21,7 +21,7 @@ This command activates BRAINSTORM mode for structured idea exploration. Use when
 
 ## Behavior
 
-When `/brainstorm` is triggered:
+When `/wf_brainstorm` is triggered:
 
 1. **Understand the goal**
    - What problem are we solving?
@@ -102,10 +102,10 @@ What direction would you like to explore?
 ## Examples
 
 ```
-/brainstorm authentication system
-/brainstorm state management for complex form
-/brainstorm database schema for social app
-/brainstorm caching strategy
+/wf_brainstorm authentication system
+/wf_brainstorm state management for complex form
+/wf_brainstorm database schema for social app
+/wf_brainstorm caching strategy
 ```
 
 ---

@@ -7,7 +7,7 @@ requires_skills: verify-changes
 artifact_outputs: preview-status, runtime-findings
 ---
 
-# /preview - Preview Management
+# /wf_preview - Preview Management
 
 $ARGUMENTS
 
@@ -20,11 +20,11 @@ Manage preview server: start, stop, status check.
 ### Commands
 
 ```
-/preview           - Show current status
-/preview start     - Start server
-/preview stop      - Stop server
-/preview restart   - Restart
-/preview check     - Health check
+/wf_preview           - Show current status
+/wf_preview start     - Start server
+/wf_preview stop      - Stop server
+/wf_preview restart   - Restart
+/wf_preview check     - Health check
 ```
 
 ---
@@ -33,7 +33,7 @@ Manage preview server: start, stop, status check.
 
 ### Start Server
 ```
-/preview start
+/wf_preview start
 
 Response:
 🚀 Starting preview...
@@ -46,7 +46,7 @@ Response:
 
 ### Status Check
 ```
-/preview
+/wf_preview
 
 Response:
 === Preview Status ===
@@ -59,7 +59,7 @@ Response:
 
 ### Port Conflict
 ```
-/preview start
+/wf_preview start
 
 Response:
 ⚠️ Port 3000 is in use.

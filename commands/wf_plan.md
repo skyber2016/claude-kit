@@ -1,4 +1,4 @@
----
+﻿---
 name: plan
 description: Create project plan using project-planner agent. No code writing - only plan file generation.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: plan-writing, architecture
 artifact_outputs: implementation-plan
 ---
 
-# /plan - Project Planning Mode
+# /wf_plan - Project Planning Mode
 
 $ARGUMENTS
 
@@ -67,7 +67,7 @@ Tell user:
 
 Next steps:
 - Review the plan
-- Run `/create` to start implementation
+- Run `/wf_create` to start implementation
 - Or modify plan manually
 ```
 
@@ -77,18 +77,18 @@ Next steps:
 
 | Request | Plan File |
 |---------|-----------|
-| `/plan e-commerce site with cart` | `ecommerce-cart.md` |
-| `/plan mobile app for fitness` | `fitness-app.md` |
-| `/plan add dark mode feature` | `dark-mode.md` |
-| `/plan fix authentication bug` | `auth-fix.md` |
-| `/plan SaaS dashboard` | `saas-dashboard.md` |
+| `/wf_plan e-commerce site with cart` | `ecommerce-cart.md` |
+| `/wf_plan mobile app for fitness` | `fitness-app.md` |
+| `/wf_plan add dark mode feature` | `dark-mode.md` |
+| `/wf_plan fix authentication bug` | `auth-fix.md` |
+| `/wf_plan SaaS dashboard` | `saas-dashboard.md` |
 
 ---
 
 ## Usage
 
 ```
-/plan e-commerce site with cart
-/plan mobile app for fitness tracking
-/plan SaaS dashboard with analytics
+/wf_plan e-commerce site with cart
+/wf_plan mobile app for fitness tracking
+/wf_plan SaaS dashboard with analytics
 ```

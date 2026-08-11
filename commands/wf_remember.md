@@ -1,4 +1,4 @@
----
+﻿---
 name: remember
 description: Save information to persistent memory for cross-session recall. Stores preferences, conventions, decisions, and context.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: memory-system
 artifact_outputs: memory-entry
 ---
 
-# /remember — Persistent Memory Management
+# /wf_remember — Persistent Memory Management
 
 $ARGUMENTS
 
@@ -65,8 +65,8 @@ This will be available in future sessions.
 ## Usage Examples
 
 ```
-/remember I prefer using bun instead of npm
-/remember Our API uses JWT with httpOnly cookies
-/remember The production server is at api.example.com:8080
-/remember I like concise responses with tables
+/wf_remember I prefer using bun instead of npm
+/wf_remember Our API uses JWT with httpOnly cookies
+/wf_remember The production server is at api.example.com:8080
+/wf_remember I like concise responses with tables
 ```

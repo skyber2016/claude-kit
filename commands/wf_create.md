@@ -1,4 +1,4 @@
----
+﻿---
 name: create
 description: Create new application command. Triggers App Builder skill and starts interactive dialogue with user.
 version: 1.0.0
@@ -7,7 +7,7 @@ requires_skills: app-builder, design-spec, verify-changes
 artifact_outputs: implementation-plan, changed-files, verification-report
 ---
 
-# /create - Create Application
+# /wf_create - Create Application
 
 $ARGUMENTS
 
@@ -49,11 +49,11 @@ This command starts a new application creation process.
 ## Usage Examples
 
 ```
-/create blog site
-/create e-commerce app with product listing and cart
-/create todo app
-/create Instagram clone
-/create crm system with customer management
+/wf_create blog site
+/wf_create e-commerce app with product listing and cart
+/wf_create todo app
+/wf_create Instagram clone
+/wf_create crm system with customer management
 ```
 
 ---

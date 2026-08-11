@@ -7,7 +7,7 @@ requires_skills: context-compression, memory-system
 artifact_outputs: status-report
 ---
 
-# /status - Show Status
+# /wf_status - Show Status
 
 $ARGUMENTS
 

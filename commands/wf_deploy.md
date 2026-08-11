@@ -7,7 +7,7 @@ requires_skills: deployment-procedures, verify-changes
 artifact_outputs: deployment-plan, deployment-report, rollback-plan
 ---
 
-# /deploy - Production Deployment
+# /wf_deploy - Production Deployment
 
 $ARGUMENTS
 
@@ -22,11 +22,11 @@ This command handles production deployment with pre-flight checks, deployment ex
 ## Sub-commands
 
 ```
-/deploy            - Interactive deployment wizard
-/deploy check      - Run pre-deployment checks only
-/deploy preview    - Deploy to preview/staging
-/deploy production - Deploy to production
-/deploy rollback   - Rollback to previous version
+/wf_deploy            - Interactive deployment wizard
+/wf_deploy check      - Run pre-deployment checks only
+/wf_deploy preview    - Deploy to preview/staging
+/wf_deploy production - Deploy to production
+/wf_deploy rollback   - Rollback to previous version
 ```
 
 ---
@@ -67,7 +67,7 @@ Before any deployment:
 
 ```
 ┌─────────────────┐
-│  /deploy        │
+│  /wf_deploy     │
 └────────┬────────┘
          │
          ▼
@@ -150,11 +150,11 @@ error TS2345: Argument of type 'string' is not assignable...
 ### Resolution
 1. Fix TypeScript error in `src/services/user.ts:45`
 2. Run `npm run build` locally to verify
-3. Try `/deploy` again
+3. Try `/wf_deploy` again
 
 ### Rollback Available
 Previous version (v1.2.2) is still active.
-Run `/deploy rollback` if needed.
+Run `/wf_deploy rollback` if needed.
 ```
 
 ---
@@ -173,9 +173,9 @@ Run `/deploy rollback` if needed.
 ## Examples
 
 ```
-/deploy
-/deploy check
-/deploy preview
-/deploy production
-/deploy rollback
+/wf_deploy
+/wf_deploy check
+/wf_deploy preview
+/wf_deploy production
+/wf_deploy rollback
 ```

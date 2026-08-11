@@ -7,7 +7,7 @@ requires_skills: simplify-code, clean-code, verify-changes
 artifact_outputs: change-plan, changed-files, verification-report
 ---
 
-# /enhance - Update Application
+# /wf_enhance - Update Application
 
 $ARGUMENTS
 
@@ -51,12 +51,12 @@ This command adds features or makes updates to existing application.
 ## Usage Examples
 
 ```
-/enhance add dark mode
-/enhance build admin panel
-/enhance integrate payment system
-/enhance add search feature
-/enhance edit profile page
-/enhance make responsive
+/wf_enhance add dark mode
+/wf_enhance build admin panel
+/wf_enhance integrate payment system
+/wf_enhance add search feature
+/wf_enhance edit profile page
+/wf_enhance make responsive
 ```
 
 ---
