@@ -1,5 +1,5 @@
 ﻿---
-name: status
+name: wf_status
 description: Display agent and project status. Progress tracking and status board.
 version: 1.0.0
 requires_agents: orchestrator

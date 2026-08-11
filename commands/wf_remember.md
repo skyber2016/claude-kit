@@ -1,5 +1,5 @@
 ﻿---
-name: remember
+name: wf_remember
 description: Save information to persistent memory for cross-session recall. Stores preferences, conventions, decisions, and context.
 version: 1.0.0
 requires_agents: orchestrator

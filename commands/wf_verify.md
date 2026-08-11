@@ -1,5 +1,5 @@
 ﻿---
-name: verify
+name: wf_verify
 description: Verify code changes work by running them. Proves through execution, not just inspection.
 version: 1.0.0
 requires_agents: test-engineer

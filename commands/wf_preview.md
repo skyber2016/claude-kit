@@ -1,5 +1,5 @@
 ﻿---
-name: preview
+name: wf_preview
 description: Preview server start, stop, and status check. Local development server management.
 version: 1.0.0
 requires_agents: frontend-specialist

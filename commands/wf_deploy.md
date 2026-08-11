@@ -1,5 +1,5 @@
 ---
-name: deploy
+name: wf_deploy
 description: Deployment command for production releases. Pre-flight checks and deployment execution.
 version: 1.0.0
 requires_agents: devops-engineer

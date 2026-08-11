@@ -1,5 +1,5 @@
 ---
-name: orchestrate
+name: wf_orchestrate
 description: Coordinate multiple agents for complex tasks. Use for multi-perspective analysis, comprehensive reviews, or tasks requiring different domain expertise.
 version: 1.0.0
 requires_agents: orchestrator

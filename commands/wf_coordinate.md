@@ -1,5 +1,5 @@
 ﻿---
-name: coordinate
+name: wf_coordinate
 description: Advanced multi-agent coordination with parallel dispatch and synthesis. Use for complex tasks requiring multiple specialist perspectives.
 version: 1.0.0
 requires_agents: orchestrator

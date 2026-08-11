@@ -1,5 +1,5 @@
 ﻿---
-name: brainstorm
+name: wf_brainstorm
 description: Structured brainstorming for projects and features. Explores multiple options before implementation.
 version: 1.0.0
 requires_agents: project-planner

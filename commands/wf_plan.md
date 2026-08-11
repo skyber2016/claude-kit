@@ -1,5 +1,5 @@
 ---
-name: plan
+name: wf_plan
 description: Create project plan using project-planner agent. No code writing - only plan file generation.
 version: 1.0.0
 requires_agents: project-planner

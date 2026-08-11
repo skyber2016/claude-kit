@@ -1,5 +1,5 @@
 ---
-name: create
+name: wf_create
 description: Create new application command. Triggers App Builder skill and starts interactive dialogue with user.
 version: 1.0.0
 requires_agents: orchestrator, project-planner

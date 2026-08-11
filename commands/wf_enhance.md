@@ -1,5 +1,5 @@
 ﻿---
-name: enhance
+name: wf_enhance
 description: Add or update features in existing application. Used for iterative development.
 version: 1.0.0
 requires_agents: code-archaeologist

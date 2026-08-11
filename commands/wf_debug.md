@@ -1,5 +1,5 @@
 ﻿---
-name: debug
+name: wf_debug
 description: Debugging command. Activates DEBUG mode for systematic problem investigation.
 version: 1.0.0
 requires_agents: debugger

@@ -1,5 +1,5 @@
 ﻿---
-name: test
+name: wf_test
 description: Test generation and test running command. Creates and executes tests for code.
 version: 1.0.0
 requires_agents: test-engineer
