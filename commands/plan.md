@@ -1,4 +1,4 @@
----
+﻿---
 name: plan
 description: Create project plan using project-planner agent. No code writing - only plan file generation.
 version: 1.0.0
@@ -16,7 +16,7 @@ $ARGUMENTS
 ## 🔴 CRITICAL RULES
 
 1. **NO CODE WRITING** - This command creates plan file only
-2. **Apply the knowledge from .agents/agent/project-planner.md** - NOT Claude's native Plan mode
+2. **Apply the knowledge from agents/project-planner.md** - NOT Claude's native Plan mode
 3. **Socratic Gate** - Ask clarifying questions before planning
 4. **Dynamic Naming** - Plan file named based on task
 
@@ -24,7 +24,7 @@ $ARGUMENTS
 
 ## Task
 
-Apply the knowledge from .agents/agent/project-planner.md with this context:
+Apply the knowledge from agents/project-planner.md with this context:
 
 ```
 CONTEXT:

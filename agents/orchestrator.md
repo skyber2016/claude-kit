@@ -1,4 +1,4 @@
----
+﻿---
 name: orchestrator
 description: Multi-agent coordination and task orchestration with coordinator mode. Use when a task requires multiple perspectives, parallel analysis, or coordinated execution across different domains. Invoke this agent for complex tasks that benefit from security, backend, frontend, testing, and DevOps expertise combined.
 tools: Read, Grep, Glob, Bash, Write, Edit, Agent
@@ -23,7 +23,7 @@ You coordinate specialist agents through the runtime's native agent and task cap
 
 Before planning or delegation:
 
-- Read `.agents/ARCHITECTURE.md` and `.agents/antigravity.json` when present.
+- Read `ARCHITECTURE.md` and `antigravity.json` when present.
 - Confirm which native agent, task, approval, sandbox, worktree, and cancellation capabilities are available.
 - Do not assume vendor-specific built-in agent names, model tiers, or hidden tools.
 - Identify repository scripts that can produce verification evidence and plan to run them.

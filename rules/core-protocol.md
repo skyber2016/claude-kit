@@ -1,4 +1,4 @@
----
+﻿---
 name: core-protocol
 version: 1.0.0
 priority: P0
@@ -54,16 +54,16 @@ Agent activated → Check frontmatter "skills:" → Read SKILL.md (INDEX) → Re
 
 ## 🗺️ System Map & Memory Read
 
-> 🔴 **MANDATORY:** At session start, you MUST read `.agents/memory/MEMORY.md` to load persistent project conventions, user preferences, and decisions.
+> 🔴 **MANDATORY:** At session start, you MUST read `memory/MEMORY.md` to load persistent project conventions, user preferences, and decisions.
 
-> 📚 **Catalog lookup (on-demand, NOT every session):** Need the full list of Agents / Skills / Scripts? The `quick-reference` rule has the essentials. For the complete catalog, read `.agents/ARCHITECTURE.md` only when you actually need it (e.g. orchestration, or discovering a skill you're unsure exists) — do NOT load it on every request.
+> 📚 **Catalog lookup (on-demand, NOT every session):** Need the full list of Agents / Skills / Scripts? The `quick-reference` rule has the essentials. For the complete catalog, read `ARCHITECTURE.md` only when you actually need it (e.g. orchestration, or discovering a skill you're unsure exists) — do NOT load it on every request.
 
 **Path Awareness (Note: the project directory name is `.agents` plural):**
 
-- Agents: `.agents/agent/` (Project)
-- Skills: `.agents/skills/` (Project)
-- Memory: `.agents/memory/` (Project)
-- Runtime Scripts: `.agents/skills/<skill>/scripts/`
+- Agents: `agents/` (Project)
+- Skills: `skills/` (Project)
+- Memory: `memory/` (Project)
+- Runtime Scripts: `skills/<skill>/scripts/`
 
 ---
 

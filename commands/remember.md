@@ -1,4 +1,4 @@
----
+﻿---
 name: remember
 description: Save information to persistent memory for cross-session recall. Stores preferences, conventions, decisions, and context.
 version: 1.0.0
@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## 🔴 CRITICAL RULES
 
-1. **Load memory-system skill** — Read `.agents/skills/memory-system/SKILL.md` first
+1. **Load memory-system skill** — Read `skills/memory-system/SKILL.md` first
 2. **Never auto-delete memories** — Always ask user before pruning
 3. **Keep index under 200 lines** — Warn if approaching limit
 4. **Distill, don't copy** — Save insights, not full conversations
@@ -29,13 +29,13 @@ Use the `memory-system` skill to save information:
 ```
 CONTEXT:
 - User wants to remember: $ARGUMENTS
-- Memory location: .agents/memory/
+- Memory location: memory/
 
 WORKFLOW:
 1. CLASSIFY the information type: user | feedback | project | reference
-2. CHECK if relevant topic file exists in .agents/memory/
+2. CHECK if relevant topic file exists in memory/
 3. SAVE to appropriate topic file (create if needed)
-4. UPDATE .agents/memory/MEMORY.md index with one-line pointer
+4. UPDATE memory/MEMORY.md index with one-line pointer
 5. CONFIRM to user what was saved
 
 RULES:
@@ -54,7 +54,7 @@ RULES:
 [OK] Saved to memory
 
 Type: [user/feedback/project/reference]
-File: .agents/memory/[topic-file].md
+File: memory/[topic-file].md
 Entry: [one-line summary of what was saved]
 
 This will be available in future sessions.

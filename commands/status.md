@@ -1,4 +1,4 @@
----
+﻿---
 name: status
 description: Display agent and project status. Progress tracking and status board.
 version: 1.0.0
@@ -87,5 +87,5 @@ Show current project and agent status.
 ## Technical
 
 Status uses these scripts:
-- `python .agents/scripts/session_manager.py status`
-- `python .agents/scripts/auto_preview.py status`
+- `python scripts/session_manager.py status`
+- `python scripts/auto_preview.py status`

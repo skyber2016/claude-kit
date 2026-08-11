@@ -1,4 +1,4 @@
----
+﻿---
 name: design-rules
 version: 1.0.0
 priority: P0
@@ -23,14 +23,14 @@ Before writing or editing UI (components, pages, styles — web or mobile), a **
 
 | Need | Read |
 | ---- | ---- |
-| DESIGN.md format / tokens | `.agents/skills/design-spec/SKILL.md` |
+| DESIGN.md format / tokens | `skills/design-spec/SKILL.md` |
 
 ---
 
 | Task         | Read                            |
 | ------------ | ------------------------------- |
-| Web UI/UX    | `.agents/agent/frontend-specialist.md` |
-| Mobile UI/UX | `.agents/agent/mobile-developer.md`    |
+| Web UI/UX    | `agents/frontend-specialist.md` |
+| Mobile UI/UX | `agents/mobile-developer.md`    |
 
 **These agents contain:**
 

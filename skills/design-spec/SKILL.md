@@ -20,7 +20,7 @@ version: 1.0.0
 
 ## When to produce a DESIGN.md
 
-This is a **hard gate** for UI work (see `.agents/rules/design-rules.md`): before writing components, pages, or styles, a `DESIGN.md` must exist at the project root. If absent, create it first from the brief; if present, read it and conform.
+This is a **hard gate** for UI work (see `rules/design-rules.md`): before writing components, pages, or styles, a `DESIGN.md` must exist at the project root. If absent, create it first from the brief; if present, read it and conform.
 
 The token block converts cleanly to/from `tokens.json`, Figma variables, and Tailwind theme config — so it is the bridge between design intent and code.
 

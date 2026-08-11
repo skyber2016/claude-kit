@@ -1,4 +1,4 @@
----
+﻿---
 name: coordinate
 description: Advanced multi-agent coordination with parallel dispatch and synthesis. Use for complex tasks requiring multiple specialist perspectives.
 version: 1.0.0
@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## 🔴 CRITICAL RULES
 
-1. **Load coordinator-mode skill** — Read `.agents/skills/coordinator-mode/SKILL.md` first
+1. **Load coordinator-mode skill** — Read `skills/coordinator-mode/SKILL.md` first
 2. **Phase-based execution** — Research → Synthesis → Implementation → Verification
 3. **Never delegate understanding** — Write specific prompts, not vague instructions
 4. **Parallel reads, sequential writes** — Read-only tasks can run in parallel
@@ -24,7 +24,7 @@ $ARGUMENTS
 
 ## Task
 
-Apply the knowledge from .agents/agent/orchestrator.md with this context:
+Apply the knowledge from agents/orchestrator.md with this context:
 
 ```
 CONTEXT:

@@ -1,4 +1,4 @@
----
+﻿---
 name: orchestrate
 description: Coordinate multiple agents for complex tasks. Use for multi-perspective analysis, comprehensive reviews, or tasks requiring different domain expertise.
 version: 1.0.0
@@ -142,7 +142,7 @@ Identify ALL domains this task touches:
 
 **PHASE 1 (Planning):**
 ```
-Apply the knowledge from .agents/agent/project-planner.md to create {task-slug}.md
+Apply the knowledge from agents/project-planner.md to create {task-slug}.md
 → STOP after plan is created
 → ASK user for approval
 ```
@@ -150,9 +150,9 @@ Apply the knowledge from .agents/agent/project-planner.md to create {task-slug}.
 **PHASE 2 (Implementation - after approval):**
 ```
 Invoke agents in PARALLEL:
-Apply the knowledge from .agents/agent/frontend-specialist.md to [task]
-Apply the knowledge from .agents/agent/backend-specialist.md to [task]
-Apply the knowledge from .agents/agent/test-engineer.md to [task]
+Apply the knowledge from agents/frontend-specialist.md to [task]
+Apply the knowledge from agents/backend-specialist.md to [task]
+Apply the knowledge from agents/test-engineer.md to [task]
 ```
 
 **🔴 CRITICAL: Context Passing (MANDATORY)**
@@ -166,7 +166,7 @@ When invoking ANY subagent, you MUST include:
 
 **Example with FULL context:**
 ```
-Apply the knowledge from .agents/agent/project-planner.md to create {task-slug}.md:
+Apply the knowledge from agents/project-planner.md to create {task-slug}.md:
 
 **CONTEXT:**
 - User Request: "A social platform for students, using mock data"
@@ -183,8 +183,8 @@ Apply the knowledge from .agents/agent/project-planner.md to create {task-slug}.
 ### Step 4: Verification (MANDATORY)
 The LAST agent must run appropriate verification scripts:
 ```bash
-python .agents/skills/vulnerability-scanner/scripts/security_scan.py .
-python .agents/skills/lint-and-validate/scripts/lint_runner.py .
+python skills/vulnerability-scanner/scripts/security_scan.py .
+python skills/lint-and-validate/scripts/lint_runner.py .
 ```
 
 ### Step 5: Synthesize Results

@@ -1,4 +1,4 @@
----
+﻿---
 name: code-rules
 version: 1.0.0
 priority: P0
@@ -60,8 +60,8 @@ description: Apply when writing, building, refactoring, or fixing code — proje
 
 | Task Stage       | Command                                            | Purpose                        |
 | ---------------- | -------------------------------------------------- | ------------------------------ |
-| **Manual Audit** | `python .agents/scripts/checklist.py .`             | Priority-based project audit   |
-| **Pre-Deploy**   | `python .agents/scripts/checklist.py . --url <URL>` | Full Suite + Performance + E2E |
+| **Manual Audit** | `python scripts/checklist.py .`             | Priority-based project audit   |
+| **Pre-Deploy**   | `python scripts/checklist.py . --url <URL>` | Full Suite + Performance + E2E |
 
 **Priority Execution Order:**
 
@@ -87,6 +87,6 @@ description: Apply when writing, building, refactoring, or fixing code — proje
 | `lighthouse_audit.py`      | performance-profiling | Before deploy       |
 | `playwright_runner.py`     | webapp-testing        | Before deploy       |
 
-> 🔴 **Agents & Skills can invoke ANY script** via `python .agents/skills/<skill>/scripts/<script>.py`
+> 🔴 **Agents & Skills can invoke ANY script** via `python skills/<skill>/scripts/<script>.py`
 
 ---

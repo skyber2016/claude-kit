@@ -1,4 +1,4 @@
----
+﻿---
 name: enhance
 description: Add or update features in existing application. Used for iterative development.
 version: 1.0.0
@@ -20,7 +20,7 @@ This command adds features or makes updates to existing application.
 ### Steps:
 
 1. **Understand Current State**
-   - Load project state with `python .agents/scripts/session_manager.py info`
+   - Load project state with `python scripts/session_manager.py info`
    - Understand existing features, tech stack
 
 2. **Plan Changes**

@@ -1,4 +1,4 @@
----
+﻿---
 name: preview
 description: Preview server start, stop, and status check. Local development server management.
 version: 1.0.0
@@ -79,8 +79,8 @@ Which one? (default: 1)
 Auto preview uses `auto_preview.py` script:
 
 ```bash
-python .agents/scripts/auto_preview.py start [port]
-python .agents/scripts/auto_preview.py stop
-python .agents/scripts/auto_preview.py status
+python scripts/auto_preview.py start [port]
+python scripts/auto_preview.py stop
+python scripts/auto_preview.py status
 ```
 

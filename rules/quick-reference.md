@@ -1,4 +1,4 @@
----
+﻿---
 name: quick-reference
 version: 1.0.0
 priority: P2
@@ -17,7 +17,7 @@ description: Apply when you need a fast lookup of which agents, skills, or valid
 
 ## Key Scripts
 
-- **Verify**: `.agents/scripts/verify_all.py`, `.agents/scripts/checklist.py`
+- **Verify**: `scripts/verify_all.py`, `scripts/checklist.py`
 - **Scanners**: `security_scan.py`
 - **Audits**: `ux_audit.py`, `mobile_audit.py`, `lighthouse_audit.py`, `seo_checker.py`
 - **Test**: `playwright_runner.py`, `test_runner.py`

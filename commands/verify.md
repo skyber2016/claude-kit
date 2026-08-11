@@ -1,4 +1,4 @@
----
+﻿---
 name: verify
 description: Verify code changes work by running them. Proves through execution, not just inspection.
 version: 1.0.0
@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## 🔴 CRITICAL RULES
 
-1. **Load verify-changes skill** — Read `.agents/skills/verify-changes/SKILL.md` first
+1. **Load verify-changes skill** — Read `skills/verify-changes/SKILL.md` first
 2. **Execute, don't inspect** — Run the code, don't just read it
 3. **Report evidence** — Show actual output, not assumptions
 4. **Cover edge cases** — Test error paths, not just happy path

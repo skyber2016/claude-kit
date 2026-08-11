@@ -1,4 +1,4 @@
----
+﻿---
 name: skillify
 description: Auto-create new skills from repetitive workflows. When you notice yourself doing the same multi-step process repeatedly, extract it into a reusable SKILL.md that any agent can use.
 when_to_use: "When the user says 'make this a skill', 'create a skill for this', 'I keep doing this same thing', or when a repetitive multi-step pattern is observed. NOT for one-off tasks."
@@ -76,7 +76,7 @@ effort: [low | medium | high]
 
 ### Step 3: Place the Skill
 ```
-.agents/skills/[skill-name]/SKILL.md
+skills/[skill-name]/SKILL.md
 ```
 
 ### Step 4: Verify
@@ -109,7 +109,7 @@ Before finalizing a new skill:
 
 | Check | Criteria |
 |---|---|
-| **Uniqueness** | No existing skill covers this (grep `.agents/skills/`) |
+| **Uniqueness** | No existing skill covers this (grep `skills/`) |
 | **Reusability** | Useful across multiple projects, not just one |
 | **Completeness** | Has overview, when to use, protocol, verification |
 | **Frontmatter** | All required fields present and accurate |
