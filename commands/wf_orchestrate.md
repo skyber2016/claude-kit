@@ -1,4 +1,4 @@
-﻿---
+---
 name: orchestrate
 description: Coordinate multiple agents for complex tasks. Use for multi-perspective analysis, comprehensive reviews, or tasks requiring different domain expertise.
 version: 1.0.0
@@ -142,7 +142,7 @@ Identify ALL domains this task touches:
 
 **PHASE 1 (Planning):**
 ```
-Apply the knowledge from agents/project-planner.md to create {task-slug}.md
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create {task-slug}.md
 → STOP after plan is created
 → ASK user for approval
 ```
@@ -150,9 +150,9 @@ Apply the knowledge from agents/project-planner.md to create {task-slug}.md
 **PHASE 2 (Implementation - after approval):**
 ```
 Invoke agents in PARALLEL:
-Apply the knowledge from agents/frontend-specialist.md to [task]
-Apply the knowledge from agents/backend-specialist.md to [task]
-Apply the knowledge from agents/test-engineer.md to [task]
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/frontend-specialist.md` to [task]
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/backend-specialist.md` to [task]
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/test-engineer.md` to [task]
 ```
 
 **🔴 CRITICAL: Context Passing (MANDATORY)**
@@ -166,7 +166,7 @@ When invoking ANY subagent, you MUST include:
 
 **Example with FULL context:**
 ```
-Apply the knowledge from agents/project-planner.md to create {task-slug}.md:
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create {task-slug}.md:
 
 **CONTEXT:**
 - User Request: "A social platform for students, using mock data"

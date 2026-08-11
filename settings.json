@@ -6,25 +6,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '$INPUT' | node .agents/hooks/validate-tool-call.mjs"
+            "command": "echo '$INPUT' | node hooks/validate-tool-call.mjs"
           }
         ]
       }
     ]
   },
-  "mcpServers": {
-    "context7": {
-      "command": "npx",
-      "args": ["-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"]
-    }
-  },
+  "mcpServers": {},
   "permissions": {
     "allow": [
-      "Bash(npm run *)",
-      "Bash(python .agents/scripts/*)",
-      "Bash(node .agents/hooks/*)",
-      "Bash(npx *)",
-      "Bash(git *)"
+      "Bash(*)"
     ]
   }
 }

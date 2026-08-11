@@ -1,4 +1,4 @@
-﻿---
+---
 name: verify
 description: Verify code changes work by running them. Proves through execution, not just inspection.
 version: 1.0.0
@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## 🔴 CRITICAL RULES
 
-1. **Load verify-changes skill** — Read `skills/verify-changes/SKILL.md` first
+1. **Load verify-changes skill** — Read `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/verify-changes/SKILL.md` first
 2. **Execute, don't inspect** — Run the code, don't just read it
 3. **Report evidence** — Show actual output, not assumptions
 4. **Cover edge cases** — Test error paths, not just happy path
@@ -39,7 +39,7 @@ WORKFLOW:
 5. FLAG anything that couldn't be verified automatically
 
 RULES:
-1. Follow verify-changes/SKILL.md protocol
+1. Follow `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/verify-changes/SKILL.md` protocol
 2. "It should work" is NOT verification — run it
 3. Test error paths, not just success paths
 4. Report with actual command output as evidence

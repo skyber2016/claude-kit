@@ -1,4 +1,4 @@
-﻿---
+---
 name: coordinate
 description: Advanced multi-agent coordination with parallel dispatch and synthesis. Use for complex tasks requiring multiple specialist perspectives.
 version: 1.0.0
@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## 🔴 CRITICAL RULES
 
-1. **Load coordinator-mode skill** — Read `skills/coordinator-mode/SKILL.md` first
+1. **Load coordinator-mode skill** — Read `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/coordinator-mode/SKILL.md` first
 2. **Phase-based execution** — Research → Synthesis → Implementation → Verification
 3. **Never delegate understanding** — Write specific prompts, not vague instructions
 4. **Parallel reads, sequential writes** — Read-only tasks can run in parallel
@@ -24,7 +24,7 @@ $ARGUMENTS
 
 ## Task
 
-Apply the knowledge from agents/orchestrator.md with this context:
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/orchestrator.md` with this context:
 
 ```
 CONTEXT:
@@ -40,7 +40,7 @@ WORKFLOW:
 5. VERIFY completeness before reporting to user
 
 RULES:
-1. Follow coordinator-mode/SKILL.md protocol
+1. Follow `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/coordinator-mode/SKILL.md` protocol
 2. Brief workers like smart colleagues — full context, specific scope
 3. Never write "based on your findings, fix it" — prove YOU understood
 4. Start with 2-3 workers, add more after synthesis if needed

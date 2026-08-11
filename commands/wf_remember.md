@@ -1,4 +1,4 @@
-﻿---
+---
 name: remember
 description: Save information to persistent memory for cross-session recall. Stores preferences, conventions, decisions, and context.
 version: 1.0.0
@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## 🔴 CRITICAL RULES
 
-1. **Load memory-system skill** — Read `skills/memory-system/SKILL.md` first
+1. **Load memory-system skill** — Read `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/memory-system/SKILL.md` first
 2. **Never auto-delete memories** — Always ask user before pruning
 3. **Keep index under 200 lines** — Warn if approaching limit
 4. **Distill, don't copy** — Save insights, not full conversations
@@ -39,7 +39,7 @@ WORKFLOW:
 5. CONFIRM to user what was saved
 
 RULES:
-1. Follow memory-system/SKILL.md taxonomy
+1. Follow `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/memory-system/SKILL.md` taxonomy
 2. Keep index entries under 150 characters
 3. Topic files must have frontmatter (type, created, updated)
 4. Don't save information derivable from code

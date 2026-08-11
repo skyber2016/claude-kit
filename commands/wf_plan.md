@@ -1,4 +1,4 @@
-﻿---
+---
 name: plan
 description: Create project plan using project-planner agent. No code writing - only plan file generation.
 version: 1.0.0
@@ -16,7 +16,7 @@ $ARGUMENTS
 ## 🔴 CRITICAL RULES
 
 1. **NO CODE WRITING** - This command creates plan file only
-2. **Apply the knowledge from agents/project-planner.md** - NOT Claude's native Plan mode
+2. **Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`** - NOT Claude's native Plan mode
 3. **Socratic Gate** - Ask clarifying questions before planning
 4. **Dynamic Naming** - Plan file named based on task
 
@@ -24,7 +24,7 @@ $ARGUMENTS
 
 ## Task
 
-Apply the knowledge from agents/project-planner.md with this context:
+Read and apply ALL instructions from the file `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` with this context:
 
 ```
 CONTEXT:
@@ -39,8 +39,8 @@ NAMING RULES:
 4. Example: "e-commerce cart" → ecommerce-cart.md
 
 RULES:
-1. Follow project-planner.md Phase -1 (Context Check)
-2. Follow project-planner.md Phase 0 (Socratic Gate)
+1. Follow Phase -1 (Context Check) from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
+2. Follow Phase 0 (Socratic Gate) from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
 3. Create {slug}.md with task breakdown
 4. DO NOT write any code files
 5. REPORT the exact file name created

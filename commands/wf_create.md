@@ -1,4 +1,4 @@
-﻿---
+---
 name: create
 description: Create new application command. Triggers App Builder skill and starts interactive dialogue with user.
 version: 1.0.0
@@ -24,7 +24,7 @@ This command starts a new application creation process.
    - If information is missing, use the `brainstorming` skill to ask clarifying questions
 
 2. **Project Planning**
-   - Apply the knowledge from agents/project-planner.md for task breakdown
+   - Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` for task breakdown
    - Determine tech stack
    - Plan file structure
    - Create the `{task-slug}.md` plan file in the project root, then proceed to building
