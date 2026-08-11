@@ -82,7 +82,7 @@ Parse `$ARGUMENTS` to determine the subcommand:
 ### 🔴 CRITICAL RULES
 
 1. **NO CODE WRITING** - This command creates planning artifacts only
-2. **Read and apply the knowledge from `agents/project-planner.md`**
+2. **Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`**
 3. **Socratic Gate** - Ask clarifying questions before planning
 4. **Dynamic Naming** - Plan named based on task
 
@@ -120,8 +120,8 @@ Announce the mode:
 
 ### Behavior — CLASSIC_MODE (no OpenSpec)
 
-1. Follow Phase -1 (Context Check) from `agents/project-planner.md`
-2. Follow Phase 0 (Socratic Gate) from `agents/project-planner.md`
+1. Follow Phase -1 (Context Check) from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
+2. Follow Phase 0 (Socratic Gate) from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
    - **If SRS exists**: Focus questions on ambiguities in the SRS, not general discovery
    - **If no SRS**: Standard Socratic discovery
 3. Create `.wiki/{task-slug}/plan.md` with task breakdown
@@ -156,13 +156,13 @@ Update README.md status to `## Status: ✅ Planned`
 ### Behavior — SDD_MODE (OpenSpec detected)
 
 1. **Understand the request and clarify material ambiguity**
-   - Apply Socratic Gate from `agents/project-planner.md`
+   - Apply Socratic Gate from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
    - **If SRS exists**: Read SRS first, then ask about ambiguities only
    - If ambiguity would affect scope or behavior, ask before creating change
 
 2. **Create OpenSpec change**
    - Derive kebab-case name from request or SRS folder name
-   - Read `@[skills/openspec-propose]` for full propose protocol
+   - Read `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-propose]` for full propose protocol
    - Run: `openspec new change "<name>" --json`
 
 3. **Generate artifacts in order**

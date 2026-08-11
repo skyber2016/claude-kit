@@ -52,7 +52,7 @@ ls .wiki/*/srs.md 2>/dev/null && echo "SRS_AVAILABLE"
 |---|---|
 | JUNIT / JS_TEST | Run existing test framework |
 | API_TESTS_EXIST | Run existing API test scripts |
-| SRS_AVAILABLE + no tests | Generate API test scripts from SRS using `@[skills/api-test-runner]` |
+| SRS_AVAILABLE + no tests | Generate API test scripts from SRS using `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/api-test-runner]` |
 | Nothing found | Ask user what to test |
 
 ---
@@ -139,7 +139,7 @@ Total: 15 tests (14 passed, 1 failed)
 When NO unit test framework exists but SRS is available:
 
 1. **Read SRS** from `.wiki/<name>/srs.md`
-2. **Read `@[skills/api-test-runner]`** for full generation protocol
+2. **Read `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/api-test-runner]`** for full generation protocol
 3. **Map SRS to test cases:**
 
    | SRS Section | Test Cases |

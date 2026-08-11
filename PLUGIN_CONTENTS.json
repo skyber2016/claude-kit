@@ -112,7 +112,7 @@
     },
     {
       "path": "commands/wf_brainstorm.md",
-      "sha256": "81c636a9f6b3d81da106e7b684f0764dea30c8dbfc260f0ba4198e01fcc5cf0b"
+      "sha256": "d5da73291e819177497862008bb2d0e569aed0d36ffa98253ea4cad398d535e7"
     },
     {
       "path": "commands/wf_coordinate.md",
@@ -120,7 +120,7 @@
     },
     {
       "path": "commands/wf_create.md",
-      "sha256": "bc2449afd6bb3c6317d7b461dafe34cb9a3832d35eb41e86c9a4d70f3ff1ca66"
+      "sha256": "440e37eee676f162f141c0ac36ebaffd0ba3d5a03b86d2f2e4ac814dd4b97efb"
     },
     {
       "path": "commands/wf_debug.md",
@@ -132,7 +132,7 @@
     },
     {
       "path": "commands/wf_enhance.md",
-      "sha256": "fec60aa08c96e253f3cf12d6b896ecf7e60d121aaf46b17c21753ddc9bae46a6"
+      "sha256": "8a85dbd34515995b925f362918e45e0bbba5003d243203f13affb9b4ed4bad9d"
     },
     {
       "path": "commands/wf_orchestrate.md",
@@ -140,7 +140,7 @@
     },
     {
       "path": "commands/wf_plan.md",
-      "sha256": "ed1b7eb88077705375794dec1975cf6618fd5798ec2b28eeb389703f35559133"
+      "sha256": "1a0e93f3dd0de7dbf384156ab39bf13f38e6a2da880fdcf05e292a652520640d"
     },
     {
       "path": "commands/wf_preview.md",
@@ -148,7 +148,7 @@
     },
     {
       "path": "commands/wf_remember.md",
-      "sha256": "b9a74333a46f38591daa4f28fcb89fba967f0560f6035903bd3387ecaabacf12"
+      "sha256": "dd707708e690495f2b1417c316f8c0d66b055659430c879f1577d5c1f75f6fd9"
     },
     {
       "path": "commands/wf_status.md",
@@ -156,11 +156,11 @@
     },
     {
       "path": "commands/wf_test.md",
-      "sha256": "ef89d4e565aedb7a2c3571fa2f60be047a9feb1d9ff6df9d930e90c064b351db"
+      "sha256": "555db5a4f375a631520c53ef2445d6c4070308ba2ab6bfd2461208d5cd39aab0"
     },
     {
       "path": "commands/wf_verify.md",
-      "sha256": "bab761e260bddb85c0d7108411856dc8f4357aba9efcf14da214bd9f11b90869"
+      "sha256": "3dd44a1ec5466cb791ff5cf80b6deb6bc77b672cb864fd6b3dcface3c07db950"
     },
     {
       "path": "hooks/hooks.json",
@@ -192,15 +192,15 @@
     },
     {
       "path": "rules/code-rules.md",
-      "sha256": "878261700eda49db5af5d400d8b9f3fdcfa94943eaf672d06e82c133bc35a24f"
+      "sha256": "9d35b9f3a8b9d164cc4aaf42e9eb42aca1201d3ce5a980053d4374c2dc5dced7"
     },
     {
       "path": "rules/core-protocol.md",
-      "sha256": "f4ba09d7b85036e89759a63e7449ece223722d4f741926f0de34f77c3fb12f38"
+      "sha256": "138365ac9ca08554871b5f28cc4a93b80e2b8f0d432d69d5b3e630f6a3f9ffa0"
     },
     {
       "path": "rules/design-rules.md",
-      "sha256": "b1899765f7da7367660b2a53295c58ebffb7bbb7d4bdeb2badadf2b95368fc3d"
+      "sha256": "1fc2097755e3f6e69d1c6421b89f8c9519458281f9b8e261ac9bc12d025f36f7"
     },
     {
       "path": "rules/quick-reference.md",
@@ -208,7 +208,7 @@
     },
     {
       "path": "rules/request-routing.md",
-      "sha256": "88f86fc8cf7bc729e5a584566c965e12b55396ed6b200d739e4eb748373d766f"
+      "sha256": "653845b0c614852c6f5c1447fae2f4237b6baa13637037620504ac498d4947c0"
     },
     {
       "path": "rules/universal-rules.md",

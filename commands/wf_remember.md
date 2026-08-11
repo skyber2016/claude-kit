@@ -15,7 +15,7 @@ $ARGUMENTS
 
 ## 🔴 CRITICAL RULES
 
-1. **Load memory-system skill** — Read `skills/memory-system/SKILL.md` first
+1. **Load memory-system skill** — Read `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/memory-system/SKILL.md` first
 2. **Never auto-delete memories** — Always ask user before pruning
 3. **Keep index under 200 lines** — Warn if approaching limit
 4. **Distill, don't copy** — Save insights, not full conversations
@@ -46,8 +46,8 @@ test -d openspec/ && echo "SDD_MODE" || echo "CLASSIC_MODE"
    📦 OpenSpec change "<name>" has all tasks completed.
    Archiving before saving memory...
    ```
-   - Read `@[skills/openspec-archive-change]` for archive protocol
-   - If delta specs exist, sync them first using `@[skills/openspec-sync-specs]`
+   - Read `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-archive-change]` for archive protocol
+   - If delta specs exist, sync them first using `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-sync-specs]`
    - Archive the change: move to `openspec/archive/YYYY-MM-DD-<name>/`
    - Report: `"✅ Archived: <name>"`
 
@@ -80,7 +80,7 @@ WORKFLOW:
 5. CONFIRM to user what was saved
 
 RULES:
-1. Follow skills/memory-system/SKILL.md taxonomy
+1. Follow ~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/memory-system/SKILL.md taxonomy
 2. Keep index entries under 150 characters
 3. Topic files must have frontmatter (type, created, updated)
 4. Don't save information derivable from code

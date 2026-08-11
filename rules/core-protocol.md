@@ -1,4 +1,4 @@
-﻿---
+---
 name: core-protocol
 version: 1.0.0
 priority: P0
@@ -63,7 +63,7 @@ Agent activated → Check frontmatter "skills:" → Read SKILL.md (INDEX) → Re
 - Agents: `agents/` (Project)
 - Skills: `skills/` (Project)
 - Memory: `memory/` (Project)
-- Runtime Scripts: `skills/<skill>/scripts/`
+- Runtime Scripts: `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/<skill>/scripts/`
 
 ---
 

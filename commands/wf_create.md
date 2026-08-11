@@ -58,7 +58,7 @@ Announce:
    - If information is missing, use the `brainstorming` skill to ask clarifying questions
 
 2. **Project Planning**
-   - Read and apply the knowledge from `agents/project-planner.md` for task breakdown
+   - Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` for task breakdown
    - Determine tech stack
    - Plan file structure
    - Create `.wiki/{task-slug}/plan.md` (then proceed to building)
@@ -93,7 +93,7 @@ Announce:
    openspec status --change "<name>" --json
    openspec instructions apply --change "<name>" --json
    ```
-   - Read `@[skills/openspec-apply-change]` for full apply protocol
+   - Read `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-apply-change]` for full apply protocol
    - Parse context files (proposal, specs, design, tasks)
    - Understand task list with completion status
 

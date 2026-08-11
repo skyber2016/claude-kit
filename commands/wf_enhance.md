@@ -72,7 +72,7 @@ Announce:
    ```
 
 2. **Revise planning artifacts**
-   - Read `@[skills/openspec-update-change]` for full update protocol
+   - Read `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-update-change]` for full update protocol
    - Read all existing artifacts (proposal, specs, design, tasks)
    - Identify what needs to change based on user's new request
    - Update artifacts to reflect new requirements

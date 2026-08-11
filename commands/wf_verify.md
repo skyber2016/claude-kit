@@ -36,7 +36,7 @@ WORKFLOW:
 2. DETECT verification method:
    a. Unit tests exist → run test framework (mvn test, npm test, etc.)
    b. API test script exists (.wiki/<name>/api-tests.sh) → run it
-   c. Neither exists → generate API test script from SRS using @[skills/api-test-runner]
+   c. Neither exists → generate API test script from SRS using @[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/api-test-runner]
 3. For API projects: ensure server is running first
 4. EXECUTE verification commands
 5. REPORT evidence of success or failure
@@ -45,7 +45,7 @@ WORKFLOW:
 API PROJECT DETECTION:
 - Check: find . -name "pom.xml" -o -name "build.gradle" | head -1
 - If Spring Boot project detected AND no test files exist:
-  → Use @[skills/api-test-runner] to generate and run curl-based tests
+  → Use @[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/api-test-runner] to generate and run curl-based tests
   → Handle session auth (JSESSIONID) automatically
 
 SERVER STARTUP (if needed):

@@ -93,7 +93,7 @@ When `/wf_brainstorm` is triggered with OpenSpec present:
    - Investigate the actual codebase: read relevant source files, search patterns, map architecture
 
 2. **Explore with grounding**
-   - Read the `@[skills/openspec-explore]` skill for full explore protocol
+   - Read the `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-explore]` skill for full explore protocol
    - Be curious, not prescriptive — open threads, don't interrogate
    - Use ASCII diagrams liberally for architecture visualization
    - Follow interesting threads, pivot when new information emerges
