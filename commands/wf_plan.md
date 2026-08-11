@@ -1,4 +1,4 @@
-﻿---
+---
 name: plan
 description: Create project plan using project-planner agent. No code writing - only plan file generation.
 version: 1.0.0
@@ -30,7 +30,7 @@ Read and apply ALL instructions from the file `~/.claude/plugins/marketplaces/cl
 CONTEXT:
 - User Request: $ARGUMENTS
 - Mode: PLANNING ONLY (no code)
-- Output: {task-slug}.md in project root (dynamic naming)
+- Output: `.wiki/{task-slug}/plan.md` (dynamic naming)
 
 NAMING RULES:
 1. Extract 2-3 key words from request
@@ -41,9 +41,9 @@ NAMING RULES:
 RULES:
 1. Follow Phase -1 (Context Check) from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
 2. Follow Phase 0 (Socratic Gate) from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
-3. Create {slug}.md with task breakdown
+3. Create `.wiki/{task-slug}/plan.md` with task breakdown
 4. DO NOT write any code files
-5. REPORT the exact file name created
+5. REPORT the exact file path created
 ```
 
 ---
@@ -52,7 +52,7 @@ RULES:
 
 | Deliverable | Location |
 |-------------|----------|
-| Project Plan | `{task-slug}.md` in project root |
+| Project Plan | `.wiki/{task-slug}/plan.md` |
 | Task Breakdown | Inside plan file |
 | Agent Assignments | Inside plan file |
 | Verification Checklist | Phase X in plan file |
@@ -63,7 +63,7 @@ RULES:
 
 Tell user:
 ```
-[OK] Plan created: {slug}.md in project root
+[OK] Plan created: .wiki/{task-slug}/plan.md
 
 Next steps:
 - Review the plan
@@ -77,11 +77,11 @@ Next steps:
 
 | Request | Plan File |
 |---------|-----------|
-| `/wf_plan e-commerce site with cart` | `ecommerce-cart.md` |
-| `/wf_plan mobile app for fitness` | `fitness-app.md` |
-| `/wf_plan add dark mode feature` | `dark-mode.md` |
-| `/wf_plan fix authentication bug` | `auth-fix.md` |
-| `/wf_plan SaaS dashboard` | `saas-dashboard.md` |
+| `/wf_plan e-commerce site with cart` | `.wiki/ecommerce-cart/plan.md` |
+| `/wf_plan mobile app for fitness` | `.wiki/fitness-app/plan.md` |
+| `/wf_plan add dark mode feature` | `.wiki/dark-mode/plan.md` |
+| `/wf_plan fix authentication bug` | `.wiki/auth-fix/plan.md` |
+| `/wf_plan SaaS dashboard` | `.wiki/saas-dashboard/plan.md` |
 
 ---
 

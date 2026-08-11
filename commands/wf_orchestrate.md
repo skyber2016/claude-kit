@@ -1,4 +1,4 @@
-﻿---
+---
 name: orchestrate
 description: Coordinate multiple agents for complex tasks. Use for multi-perspective analysis, comprehensive reviews, or tasks requiring different domain expertise.
 version: 1.0.0
@@ -58,7 +58,7 @@ $ARGUMENTS
 
 | Step | Agent | Action |
 |------|-------|--------|
-| 1 | `project-planner` | Create {task-slug}.md in project root |
+| 1 | `project-planner` | Create `.wiki/{task-slug}/plan.md` |
 | 2 | (optional) `explorer-agent` | Codebase discovery if needed |
 
 > 🔴 **NO OTHER AGENTS during planning!** Only project-planner and explorer-agent.
@@ -68,7 +68,7 @@ $ARGUMENTS
 ```
 After {task-slug}.md is complete, ASK:
 
-"✅ Plan created: {task-slug}.md
+"✅ Plan created: .wiki/{task-slug}/plan.md
 
 Do you approve? (Y/N)
 - Y: Start implementation
@@ -91,7 +91,7 @@ Do you approve? (Y/N)
 
 | Agent | Domain | Use When |
 |-------|--------|----------|
-| `project-planner` | Planning | Task breakdown, {task-slug}.md |
+| `project-planner` | Planning | Task breakdown, `.wiki/{task-slug}/plan.md` |
 | `explorer-agent` | Discovery | Codebase mapping |
 | `frontend-specialist` | UI/UX | React, Vue, CSS, HTML |
 | `backend-specialist` | Server | API, Node.js, Python |
@@ -135,14 +135,14 @@ Identify ALL domains this task touches:
 
 | If Plan Exists | Action |
 |----------------|--------|
-| NO `{task-slug}.md` | → Go to PHASE 1 (planning only) |
-| YES `{task-slug}.md` + user approved | → Go to PHASE 2 (implementation) |
+| NO `.wiki/{task-slug}/plan.md` | → Go to PHASE 1 (planning only) |
+| YES `.wiki/{task-slug}/plan.md` + user approved | → Go to PHASE 2 (implementation) |
 
 ### Step 3: Execute Based on Phase
 
 **PHASE 1 (Planning):**
 ```
-Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create {task-slug}.md
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create `.wiki/{task-slug}/plan.md`
 → STOP after plan is created
 → ASK user for approval
 ```
@@ -166,7 +166,7 @@ When invoking ANY subagent, you MUST include:
 
 **Example with FULL context:**
 ```
-Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create {task-slug}.md:
+Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create `.wiki/{task-slug}/plan.md`:
 
 **CONTEXT:**
 - User Request: "A social platform for students, using mock data"
@@ -174,7 +174,7 @@ Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-mar
 - Previous Work: Orchestrator asked 6 questions, user chose all options
 - Current Plan: playful-roaming-dream.md exists in workspace with initial structure
 
-**TASK:** Create detailed {task-slug}.md based on ABOVE decisions. Do NOT infer from folder name.
+**TASK:** Create detailed `.wiki/{task-slug}/plan.md` based on ABOVE decisions. Do NOT infer from folder name.
 ```
 
 > ⚠️ **VIOLATION:** Invoking subagent without full context = subagent will make wrong assumptions!
@@ -220,7 +220,7 @@ Combine all agent outputs into unified report.
 3. **[Agent 3]**: Finding
 
 ### Deliverables
-- [ ] {task-slug}.md created
+- [ ] `.wiki/{task-slug}/plan.md` created
 - [ ] Code implemented
 - [ ] Tests passing
 - [ ] Scripts verified

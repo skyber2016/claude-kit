@@ -1,4 +1,4 @@
-﻿---
+---
 name: create
 description: Create new application command. Triggers App Builder skill and starts interactive dialogue with user.
 version: 1.0.0
@@ -27,10 +27,10 @@ This command starts a new application creation process.
    - Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` for task breakdown
    - Determine tech stack
    - Plan file structure
-   - Create the `{task-slug}.md` plan file in the project root, then proceed to building
+   - Create `.wiki/{task-slug}/plan.md` (then proceed to building)
 
 3. **Design Source-of-Truth (UI projects only)**
-   - If the app has a UI, create `DESIGN.md` at the project root BEFORE building UI — follow the `design-spec` skill (read `collection.md` for real-world references first).
+   - If the app has a UI, create `.wiki/{task-slug}/design.md` BEFORE building UI — follow the `design-spec` skill (read `collection.md` for real-world references first).
    - Skip only for headless/CLI/API-only projects.
 
 4. **Application Building (After Approval)**
