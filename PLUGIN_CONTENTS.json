@@ -148,7 +148,7 @@
     },
     {
       "path": "commands/wf_remember.md",
-      "sha256": "688c7063472c4326ea39a984235da38b8dfd814784b9b666cd7d77230ed2584c"
+      "sha256": "b9a74333a46f38591daa4f28fcb89fba967f0560f6035903bd3387ecaabacf12"
     },
     {
       "path": "commands/wf_status.md",
