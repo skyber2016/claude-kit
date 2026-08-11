@@ -1,9 +1,9 @@
 {
   "name": "ag-kit",
-  "version": "2026.7.27",
+  "version": "2026.8.11",
   "runtime": "claude-code",
   "counts": {
-    "skills": 142,
+    "skills": 54,
     "agents": 20,
     "rules": 6,
     "commands": 13,
@@ -11,12 +11,16 @@
   },
   "files": [
     {
+      "path": ".claude-plugin/marketplace.json",
+      "sha256": "751146fab8ff5d79a80a59880380b5e4e536a735197aade8bef7cc1086fa17fb"
+    },
+    {
       "path": ".claude-plugin/plugin.json",
-      "sha256": "5174cf0f5d0bada673f9d7267a99d7a9a526ad8a271d04a0a0a837c41e62760c"
+      "sha256": "fe66bb1217a8286455a508709af45e0ebb8b5b15e1f4bdb53465a4ec0e45755f"
     },
     {
       "path": ".mcp.json",
-      "sha256": "cb41a099a03068860be9da7cc94c8eb9914f84d487cd8f8c1fffd7d021ff7688"
+      "sha256": "abe4e12eba5d0efba10617fbb57986635b85f98de13fc7faa1e855b29c2b8305"
     },
     {
       "path": "agents/backend-specialist.md",
@@ -60,7 +64,7 @@
     },
     {
       "path": "agents/orchestrator.md",
-      "sha256": "671cd4160d5cfe2c6a920007e2d3d6bd4b41459b01deb5b45241f3cb54fed460"
+      "sha256": "3fe7deb54dc3e8370500048730e8d7c17d93387cbdea212df5453686c9d552ce"
     },
     {
       "path": "agents/penetration-tester.md",
@@ -80,7 +84,7 @@
     },
     {
       "path": "agents/project-planner.md",
-      "sha256": "6c5b212414bd283487ce40f1a1686d688ffdaf039e369725867a5d83ce00b71a"
+      "sha256": "165d100b2800a5f3c8224a6c5c25e69fae48ea1759f6fb592fcf8334035a283d"
     },
     {
       "path": "agents/qa-automation-engineer.md",
@@ -100,67 +104,67 @@
     },
     {
       "path": "claude-extension.json",
-      "sha256": "57e6d00e658cccf21797a86b17079e874e9b151b88f0904c9be7836893a14d57"
+      "sha256": "d221ec0cbcbe1f10a862a84b1df577acf309c58ced0b6d8723969ba2cc1b32d5"
     },
     {
       "path": "CLAUDE.md",
-      "sha256": "6f01904c9b23b03b26e0a3688c9b7fa97fc05b20019c0adb1646f9e47e7cd224"
+      "sha256": "76a0b332315d574faed8da3de2ff4b73f17ef24f5e681e4d49e2caaab2069943"
     },
     {
-      "path": "commands/brainstorm.md",
-      "sha256": "0c39f62c63690c87ea7452d7ee23b87c502992d95630ef6a7b8d0d98b8c01b9f"
+      "path": "commands/wf_brainstorm.md",
+      "sha256": "81c636a9f6b3d81da106e7b684f0764dea30c8dbfc260f0ba4198e01fcc5cf0b"
     },
     {
-      "path": "commands/coordinate.md",
-      "sha256": "57e0482ba09ba4b1159ab0a2ddf3b767edff7e542e9a1dd43cc728865ba3ba07"
+      "path": "commands/wf_coordinate.md",
+      "sha256": "bcc0bcb82edc56b91537cd07f41aac17d67c5cda756e9c486a8cb7266d63e633"
     },
     {
-      "path": "commands/create.md",
-      "sha256": "b4514b74aeb49ae8956b7de8a725bcc0c9e96a067f40b541bca41a4f8a8ec224"
+      "path": "commands/wf_create.md",
+      "sha256": "bc2449afd6bb3c6317d7b461dafe34cb9a3832d35eb41e86c9a4d70f3ff1ca66"
     },
     {
-      "path": "commands/debug.md",
-      "sha256": "bc431e8da633b78151bfb535f735ef7e96191e2c44a723a8fbb779ba0489b01c"
+      "path": "commands/wf_debug.md",
+      "sha256": "098a998cdd97bfed2c796d6292a1108ede7060a4c2fcab1abfb5feb424b69d8b"
     },
     {
-      "path": "commands/deploy.md",
-      "sha256": "dc7c294ca732f4617b9045f074d3f38f5b9411747177fc17d46510b7e8657eba"
+      "path": "commands/wf_deploy.md",
+      "sha256": "a4c67af870496336ddcd793089b00fb19b1bdfe102d3be747b82bf360b4fd5df"
     },
     {
-      "path": "commands/enhance.md",
-      "sha256": "69033313a45be0a66cab37adeb2d6fe930c09c5722069975278ae18a485e50db"
+      "path": "commands/wf_enhance.md",
+      "sha256": "fec60aa08c96e253f3cf12d6b896ecf7e60d121aaf46b17c21753ddc9bae46a6"
     },
     {
-      "path": "commands/orchestrate.md",
-      "sha256": "ed6ce3df66f48ac35d175120cde37c012985842c2a92ebabd053e2fa52330f68"
+      "path": "commands/wf_orchestrate.md",
+      "sha256": "62b68df8059dd0e75beafbe755f04d7265a10b7e5b1d125a99160914c504694a"
     },
     {
-      "path": "commands/plan.md",
-      "sha256": "b3540eae53515affdceaac61fcd714b54cc31aa4500e3b608d2256b9d493c003"
+      "path": "commands/wf_plan.md",
+      "sha256": "ed1b7eb88077705375794dec1975cf6618fd5798ec2b28eeb389703f35559133"
     },
     {
-      "path": "commands/preview.md",
-      "sha256": "73b4ab96fd3b9fdda192cdc7c1bc84f5beef731b2103d42c24540c555d30359c"
+      "path": "commands/wf_preview.md",
+      "sha256": "aa6adc104ccf9c468d58c1800e646c10451b519b4e94603151229f06f06b4c15"
     },
     {
-      "path": "commands/remember.md",
-      "sha256": "5ce4604997e0818c261c26a63d5bf44a6a43532b29c6a6db4525441cc32ecfdf"
+      "path": "commands/wf_remember.md",
+      "sha256": "688c7063472c4326ea39a984235da38b8dfd814784b9b666cd7d77230ed2584c"
     },
     {
-      "path": "commands/status.md",
-      "sha256": "6ca784294c460aa73c23d214c76fd5f4eb15385ccc22407a4a4959effb9d5aa3"
+      "path": "commands/wf_status.md",
+      "sha256": "c883c768abf186dd6c5f8add4ec1b857310deb1dfc1e6ec5c1cee7460ae03595"
     },
     {
-      "path": "commands/test.md",
-      "sha256": "494499eeffaf19a9a18a94c1e5976c7d66908025a9394456191c399cfcbd1e1a"
+      "path": "commands/wf_test.md",
+      "sha256": "ef89d4e565aedb7a2c3571fa2f60be047a9feb1d9ff6df9d930e90c064b351db"
     },
     {
-      "path": "commands/verify.md",
-      "sha256": "187e9be5b0c04647a37d01bab11721945e2cd8aa5fc2eb17959c017206491b14"
+      "path": "commands/wf_verify.md",
+      "sha256": "bab761e260bddb85c0d7108411856dc8f4357aba9efcf14da214bd9f11b90869"
     },
     {
       "path": "hooks/hooks.json",
-      "sha256": "ada9ee88838fc39e9c4e5120b5c144b475b96d29686a4254dec1a670919b3787"
+      "sha256": "01d44fc756243975291574a85d563416e534a5cbab7ed0b2e7d3acf6cd3447c0"
     },
     {
       "path": "hooks/validate-tool-call.mjs",
@@ -188,31 +192,35 @@
     },
     {
       "path": "rules/code-rules.md",
-      "sha256": "b1cf9ecb0e4f949dcc02711de1966ac5b93c6a5167a40138a4fa03a91a58b3d9"
+      "sha256": "878261700eda49db5af5d400d8b9f3fdcfa94943eaf672d06e82c133bc35a24f"
     },
     {
       "path": "rules/core-protocol.md",
-      "sha256": "989fa52cf77ca78259c1d1080315b2edb83fe7ef72ce0b191490a6898184ed83"
+      "sha256": "f4ba09d7b85036e89759a63e7449ece223722d4f741926f0de34f77c3fb12f38"
     },
     {
       "path": "rules/design-rules.md",
-      "sha256": "73ee8f120e85939d04a7153bd7d2336cfb7d3025c9c6fc4b9003eca97e3f228b"
+      "sha256": "b1899765f7da7367660b2a53295c58ebffb7bbb7d4bdeb2badadf2b95368fc3d"
     },
     {
       "path": "rules/quick-reference.md",
-      "sha256": "f077e962ea7ad1a5afc51efca8f3d27c68b895398e0f0f153c118a9cb635593c"
+      "sha256": "590ba5c95d31b4d7eae6ec9ccc94a0bc25add90e50c8c101dbfe953b9bed7066"
     },
     {
       "path": "rules/request-routing.md",
-      "sha256": "ef61d7673b970ffaf363aa184ad169dce88890eb793bb39b931356ba702546fd"
+      "sha256": "88f86fc8cf7bc729e5a584566c965e12b55396ed6b200d739e4eb748373d766f"
     },
     {
       "path": "rules/universal-rules.md",
       "sha256": "8f03f437aa32909f473573c75754b671cb47344de82a18c4f8926db6a41c2388"
     },
     {
+      "path": "scripts/generate-plugin-contents.mjs",
+      "sha256": "cf0fe6a1e86ebd3a205c8fab0f00f33a094547660463141c253a7a729bad45d2"
+    },
+    {
       "path": "settings.json",
-      "sha256": "b78a67d792cdc64209a830d571e501dd7dd217aaabd576edbfba4ff23ff5c257"
+      "sha256": "5520b4942782f28c77d6412349ee3716976caf8954f2f87efce74c5b7c72c6e1"
     },
     {
       "path": "skills/api-patterns/api-style.md",
@@ -261,6 +269,10 @@
     {
       "path": "skills/api-patterns/versioning.md",
       "sha256": "8ee15be17fea4b37f222039240d66683b1afd7efb436363c9bc1c15baa5bef63"
+    },
+    {
+      "path": "skills/api-test-runner/SKILL.md",
+      "sha256": "f745b440f715fc57d6d02377fd4526a967fcf6a633165616a2b969e5e44a245a"
     },
     {
       "path": "skills/app-builder/agent-coordination.md",
@@ -384,11 +396,11 @@
     },
     {
       "path": "skills/brainstorming/SKILL.md",
-      "sha256": "2c0200f3ed2d98b2af2bd468b94949f27d1185f75a10ab7d538b3e3cd7bb0a1e"
+      "sha256": "85c88dea5b6cdf75cadd334dcaa4bf223137c59ea5443e5952400f211e1eb074"
     },
     {
       "path": "skills/clean-code/SKILL.md",
-      "sha256": "81daa65e0925dffef1a1768daed1981f36bd2777039306134ce4a3aa1e280600"
+      "sha256": "ba34c18d8a2c7d443ebe19dfe5785daeb5cfdbc54249351f676345f7b90eb403"
     },
     {
       "path": "skills/code-review-checklist/SKILL.md",
@@ -448,7 +460,7 @@
     },
     {
       "path": "skills/design-spec/SKILL.md",
-      "sha256": "0dd5676d7e6b9e6e0e8d9acbe712a075775b5b70205a34c083164345aa90b5e5"
+      "sha256": "ed2198ba56896b9df71dc774121f157c0ecd5aa819be4688e297e1fd94a04b3f"
     },
     {
       "path": "skills/documentation-templates/SKILL.md",
@@ -472,7 +484,7 @@
     },
     {
       "path": "skills/frontend-design/SKILL.md",
-      "sha256": "cc76cd80e578d50c9242c1bc5d63249dcca7ac0092af9c4d0149b487ef3a48b7"
+      "sha256": "61b136ea07dcaf1b327456b4256c172a3b6e988e177b237155686ef5db60c30f"
     },
     {
       "path": "skills/frontend-design/style-brutalist.md",
@@ -544,7 +556,7 @@
     },
     {
       "path": "skills/intelligent-routing/SKILL.md",
-      "sha256": "b2976fa3ad25c093033750639e5fadce1e75c2e87d7890850cfe5d5b64d6c67c"
+      "sha256": "95fa2eea342ffa73a702b4d75a479274be212b36bd22decee608831d56ec9ad0"
     },
     {
       "path": "skills/lint-and-validate/scripts/lint_runner.py",
@@ -564,7 +576,7 @@
     },
     {
       "path": "skills/memory-system/SKILL.md",
-      "sha256": "c45ffb635c5844708f3ed3304da5b438141172b9240ad49c1ebb692f3f5d3cac"
+      "sha256": "15e65d246a62f4f78244dd46b525f4c54f010db68b89e3d1833a38c26d117ee3"
     },
     {
       "path": "skills/mobile-design/decision-trees.md",
@@ -675,6 +687,30 @@
       "sha256": "8b8bf10a4e10f42a3e89f0658dd9a673d137101c7f455f39e622513849f8ab09"
     },
     {
+      "path": "skills/openspec-apply-change/SKILL.md",
+      "sha256": "5c4c0edaa6f7ac740fac7b845d851337949f5c7b91be074f79b72aba8cdb247d"
+    },
+    {
+      "path": "skills/openspec-archive-change/SKILL.md",
+      "sha256": "e5b88ce818defdbc6faa8a4325336ad22a069802fbaccd74e3f6c347c575a233"
+    },
+    {
+      "path": "skills/openspec-explore/SKILL.md",
+      "sha256": "6339464266d416f4a514a558573b2ad323b98968b99de6e887f5d5a4694ed0b9"
+    },
+    {
+      "path": "skills/openspec-propose/SKILL.md",
+      "sha256": "74276e6ab34197e1d869cc5901ea05ba3f2ebb7723044c797d32933ff37de65b"
+    },
+    {
+      "path": "skills/openspec-sync-specs/SKILL.md",
+      "sha256": "f8063e4a4cdf7c157c7cb707faea4a017ce1c9fd6f8c51573a075ab5301dbbdf"
+    },
+    {
+      "path": "skills/openspec-update-change/SKILL.md",
+      "sha256": "00f5cccbecd68619971fa9ea4703f5f1b6ddadb8683c23fa7f7a2fe9106a7832"
+    },
+    {
       "path": "skills/parallel-agents/SKILL.md",
       "sha256": "318e32663acd8adbd65e1ba3a83c83489523f3083f23b4b6632f895aeef29487"
     },
@@ -692,7 +728,7 @@
     },
     {
       "path": "skills/plan-writing/SKILL.md",
-      "sha256": "7901d8091e954b4e469718bee86c912e447970873216175feafff67e86642dd7"
+      "sha256": "07277aa08c73652ab868ae871fc7eeed843a1eaf05baf30488c5fea060b222bc"
     },
     {
       "path": "skills/powershell-windows/SKILL.md",
@@ -728,7 +764,7 @@
     },
     {
       "path": "skills/skillify/SKILL.md",
-      "sha256": "03bb3ccb4544cd0c4df99f8ad66f42c656b0c9c9c641d55b4a2be5b841450471"
+      "sha256": "e2d3ed49f11057af526e96761256b5f1249c17ce7fb0a4401ba5410a04fe7cd1"
     },
     {
       "path": "skills/systematic-debugging/SKILL.md",

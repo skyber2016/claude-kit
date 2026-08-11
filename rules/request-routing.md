@@ -1,4 +1,4 @@
-﻿---
+---
 name: request-routing
 version: 1.0.0
 priority: P0
@@ -23,6 +23,8 @@ trigger: always_on
 | **COMPLEX CODE** | "build", "create", "implement", "refactor" | TIER 0 + TIER 1 (full) + Agent | **{task-slug}.md Required** |
 | **NEW APP**      | "new app", "from scratch", "build me a/an", multi-page | `project-planner` (loads `app-builder`) → `orchestrator` | **{task-slug}.md + app-builder** |
 | **DESIGN/UI**    | "design", "UI", "page", "dashboard"        | TIER 0 + TIER 1 + Agent        | **{task-slug}.md Required** |
+| **SRS INIT**     | "init", "scaffold", "new srs"               | `/wf_plan init <name>`         | Folder scaffold only        |
+| **SPEC CHANGE**  | "propose", "spec", "plan from srs"          | `/wf_plan <name>` (SDD auto)   | OpenSpec change if detected |
 | **SLASH CMD**    | /create, /orchestrate, /debug              | Command-specific flow          | Variable                    |
 
 > 🔴 **NEW APP / scaffold from scratch:** route through `project-planner` or `orchestrator` (both load `app-builder`), NOT a lone specialist like `frontend-specialist`. A specialist alone has no project-detection, tech-stack selection, or template knowledge — `app-builder` does. Or run `/create`.
@@ -85,6 +87,7 @@ When auto-applying an agent, inform the user:
 | Mode     | Agent             | Behavior                                     |
 | -------- | ----------------- | -------------------------------------------- |
 | **/plan** | `project-planner` | 4-phase methodology. NO CODE before Phase 4. |
+| **/plan init** | —            | Scaffold `.wiki/<name>/` folder for SRS.     |
 | **ask**  | -                 | Focus on understanding. Ask questions.       |
 | **edit** | `orchestrator`    | Normal Claude Code interaction.              |
 

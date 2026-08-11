@@ -1,4 +1,4 @@
-﻿---
+---
 name: code-rules
 version: 1.0.0
 priority: P0
@@ -31,6 +31,7 @@ description: Apply when writing, building, refactoring, or fixing code — proje
 | Request Type            | Strategy       | Required Action                                                   |
 | ----------------------- | -------------- | ----------------------------------------------------------------- |
 | **New Feature / Build** | Deep Discovery | ASK minimum 3 strategic questions                                 |
+| **SRS-driven**          | SRS Analysis   | Read `.wiki/<name>/srs.md`, ask about ambiguities only            |
 | **Code Edit / Bug Fix** | Context Check  | Confirm understanding + ask impact questions                      |
 | **Vague / Simple**      | Clarification  | Ask Purpose, Users, and Scope                                     |
 | **Full Orchestration**  | Gatekeeper     | **STOP** Claude Code subagents until user confirms plan details               |
@@ -41,7 +42,8 @@ description: Apply when writing, building, refactoring, or fixing code — proje
 1. **Never Assume:** If even 1% is unclear, ASK.
 2. **Handle Spec-heavy Requests:** When user gives a list (Answers 1, 2, 3...), do NOT skip the gate. Instead, ask about **Trade-offs** or **Edge Cases** (e.g., "LocalStorage confirmed, but should we handle data clearing or versioning?") before starting.
 3. **Wait:** Do NOT invoke Claude Code subagents or write code until the user clears the Gate.
-4. **Reference:** Full protocol in `@[skills/brainstorming]`.
+4. **Reference:** Use `/wf_brainstorm` for structured exploration, or full Socratic protocol in `@[skills/brainstorming]`.
+5. **SRS shortcut:** If `.wiki/<name>/srs.md` exists, the Gate focuses on SRS ambiguities only — skip general discovery.
 
 ---
 
