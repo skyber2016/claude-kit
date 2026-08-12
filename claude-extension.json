@@ -1,6 +1,6 @@
 {
   "name": "ag-kit",
-  "version": "2026.7.27",
+  "version": "2026.8.12",
   "description": "AI agent engineering kit for Claude Code with rules, skills, slash commands, orchestration, MCP guidance, and safety hooks.",
   "runtime": "claude-code",
   "contextFileName": "CLAUDE.md"

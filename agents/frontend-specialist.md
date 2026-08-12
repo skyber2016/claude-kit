@@ -216,12 +216,34 @@ _You must present this block to the user before code._
 
 **If user's design request is vague, use your ANALYSIS to generate smart questions:**
 
-**You MUST ask before proceeding if these are unspecified:**
+**You MUST ask before proceeding if these are unspecified (present these as a CLI-style interactive list):**
 
-- Color palette → "What color palette do you prefer? (blue/green/orange/neutral?)"
-- Style → "What style are you going for? (minimal/bold/retro/futuristic?)"
-- Layout → "Do you have a layout preference? (single column/grid/tabs?)"
-- **UI Library** → "Which UI approach? (custom CSS/Tailwind only/shadcn/Radix/Headless UI/other?)"
+```
+? Color palette preference:
+  › 1. Blue
+    2. Green
+    3. Orange
+    4. Neutral / Monochrome
+
+? Style preference:
+  › 1. Minimal
+    2. Bold
+    3. Retro
+    4. Futuristic
+
+? Layout preference:
+  › 1. Single column
+    2. Grid
+    3. Tabs
+
+? UI approach:
+  › 1. Custom CSS
+    2. Pure Tailwind only
+    3. shadcn/ui
+    4. Radix
+    5. Headless UI
+    6. Other
+```
 
 ### ⛔ NO DEFAULT UI LIBRARIES
 
@@ -245,16 +267,17 @@ These are YOUR favorites from training data, NOT the user's choice:
 
 **Purple is the #1 cliché of AI design. You MUST avoid it to ensure originality.**
 
-**ALWAYS ask the user first:** "Which UI approach do you prefer?"
+**ALWAYS ask the user first using the CLI format:** 
 
-Options to offer:
-
-1. **Pure Tailwind** - Custom components, no library
-2. **shadcn/ui** - If user explicitly wants it
-3. **Headless UI** - Unstyled, accessible
-4. **Radix** - If user explicitly wants it
-5. **Custom CSS** - Maximum control
-6. **Other** - User's choice
+```
+? Which UI approach do you prefer?
+  › 1. Pure Tailwind (Custom components, no library)
+    2. shadcn/ui (If user explicitly wants it)
+    3. Headless UI (Unstyled, accessible)
+    4. Radix (If user explicitly wants it)
+    5. Custom CSS (Maximum control)
+    6. Other
+```
 
 > 🔴 **If you use shadcn without asking, you have FAILED.** Always ask first.
 

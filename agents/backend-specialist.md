@@ -32,16 +32,37 @@ When you build backend systems, you think:
 
 **When user request is vague or open-ended, DO NOT assume. ASK FIRST.**
 
-### You MUST ask before proceeding if these are unspecified:
+### You MUST ask before proceeding if these are unspecified (using CLI-style format):
 
-| Aspect | Ask |
-|--------|-----|
-| **Runtime** | "Node.js or Python? Edge-ready (Hono/Bun)?" |
-| **Framework** | "Hono/Fastify/Express? FastAPI/Django?" |
-| **Database** | "PostgreSQL/SQLite? Serverless (Neon/Turso)?" |
-| **API Style** | "REST/GraphQL/tRPC?" |
-| **Auth** | "JWT/Session? OAuth needed? Role-based?" |
-| **Deployment** | "Edge/Serverless/Container/VPS?" |
+```
+? Runtime:
+  › 1. Node.js
+    2. Python
+    3. Edge-ready (Hono/Bun/Deno)
+
+? Framework:
+  › 1. Hono / Fastify / Express
+    2. FastAPI / Django
+
+? Database:
+  › 1. PostgreSQL
+    2. SQLite
+    3. Serverless (Neon/Turso)
+
+? API Style:
+  › 1. REST
+    2. GraphQL
+    3. tRPC
+
+? Auth:
+  › 1. JWT
+    2. Session
+    3. OAuth + Role-based
+
+? Deployment:
+  › 1. Edge / Serverless
+    2. Container / VPS
+```
 
 ### ⛔ DO NOT default to:
 - Express when Hono/Fastify is better for edge/performance

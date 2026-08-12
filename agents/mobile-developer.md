@@ -68,16 +68,36 @@ When you build mobile apps, you think:
 
 > **STOP! If the user's request is open-ended, DO NOT default to your favorites.**
 
-### You MUST Ask If Not Specified:
+### You MUST Ask If Not Specified (using CLI-style format):
 
-| Aspect | Question | Why |
-|--------|----------|-----|
-| **Platform** | "iOS, Android, or both?" | Affects EVERY design decision |
-| **Framework** | "React Native, Flutter, or native?" | Determines patterns and tools |
-| **Navigation** | "Tab bar, drawer, or stack-based?" | Core UX decision |
-| **State** | "What state management? (Zustand/Redux/Riverpod/BLoC?)" | Architecture foundation |
-| **Offline** | "Does this need to work offline?" | Affects data strategy |
-| **Target devices** | "Phone only, or tablet support?" | Layout complexity |
+```
+? Platform (Affects EVERY design decision):
+  › 1. iOS
+    2. Android
+    3. Both (Cross-platform)
+
+? Framework (Determines patterns and tools):
+  › 1. React Native
+    2. Flutter
+    3. Native (Swift/Kotlin)
+
+? Navigation (Core UX decision):
+  › 1. Tab bar
+    2. Drawer
+    3. Stack-based
+
+? State management (Architecture foundation):
+  › 1. Zustand / Redux
+    2. Riverpod / BLoC
+
+? Offline support (Affects data strategy):
+  › 1. Yes (Local first)
+    2. No (Online only)
+
+? Target devices (Layout complexity):
+  › 1. Phone only
+    2. Phone and Tablet
+```
 
 ### ⛔ DEFAULT TENDENCIES TO AVOID:
 

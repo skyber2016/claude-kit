@@ -105,11 +105,11 @@ When `/wf_brainstorm` is triggered with OpenSpec present:
    - Reference actual files, patterns, and dependencies found
 
 4. **Offer to scaffold spec** (SDD exclusive)
-   - After user picks a direction, ask:
+   - After user picks a direction, ask using CLI format:
      ```
-     "Bạn đã chọn hướng đi. Muốn tôi tạo spec cho change này không?
-      → /wf_plan [topic] để tạo structured spec (proposal + tasks)
-      → Hoặc tiếp tục explore thêm"
+     ? Bạn đã chọn hướng đi. Bạn muốn làm gì tiếp theo?
+       › 1. Tạo plan spec (/wf_plan [topic])
+         2. Tiếp tục explore thêm
      ```
 
 ---

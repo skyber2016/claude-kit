@@ -63,13 +63,36 @@ What type of game?
 | **Cost** | Free tier, then revenue share | Free forever | 5% after $1M |
 | **Team size** | Any | Solo to medium | Medium to large |
 
-### Selection Questions
+### Selection Questions (Ask using CLI-style format):
 
-1. What's the target platform?
-2. 2D or 3D?
-3. Team size and experience?
-4. Budget constraints?
-5. Required visual quality?
+```
+? What's the target platform?
+  › 1. PC
+    2. Console
+    3. Mobile
+    4. Web
+    5. VR/AR
+
+? 2D or 3D?
+  › 1. 2D
+    2. 3D
+    3. 2.5D (Isometric / Mixed)
+
+? Team size and experience?
+  › 1. Solo
+    2. Small Indie Team
+    3. Medium/Large Studio
+
+? Budget constraints?
+  › 1. Zero/Free only
+    2. Revenue share ok
+    3. Paid licenses ok
+
+? Required visual quality?
+  › 1. Simple / Retro / Pixel Art
+    2. Stylized / Low Poly
+    3. AAA / Photorealistic
+```
 
 ---
 

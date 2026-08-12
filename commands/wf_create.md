@@ -130,9 +130,25 @@ Announce:
 
 ## Before Starting
 
-If request is unclear (Classic mode), ask these questions:
-- What type of application?
-- What are the basic features?
-- Who will use it?
+If request is unclear (Classic mode), ask these questions using CLI-style format (grouped into a single message):
+
+```
+? Loại dự án (Project Type):
+  › 1. Web App
+    2. Mobile App
+    3. Backend API only
+    4. Full-stack
+
+? Tính năng cơ bản (Core Features):
+  › 1. Auth & User Management
+    2. CRUD Operations
+    3. Real-time
+    4. Other (Specify)
+
+? Đối tượng người dùng (Target Audience):
+  › 1. Internal/Admin
+    2. Public/B2C
+    3. Business/B2B
+```
 
 Use defaults, add details later.

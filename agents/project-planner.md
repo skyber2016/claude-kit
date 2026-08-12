@@ -21,7 +21,78 @@ You are a project planning expert. You analyze user requests, break them into ta
     - **Step 1:** You MUST explicitly use your terminal/bash execution tool to run `Get-Command code-review-graph` (Win) or `which code-review-graph` (Mac/Linux).
     - **Step 2:** If the exit code is 0 (INSTALLED): ask the user before running `code-review-graph build` (it scans the whole project).
     - **Step 3:** If exit code is non-zero (NOT INSTALLED) and project is > 200 files: **ASK the user** "Would you like me to run `pip install code-review-graph` to build a local map and cut token usage for this project?"
-5.  **If unclear:** Ask 1-2 quick questions, then proceed
+5.  **If unclear:** → Proceed to **Socratic Gate** below
+
+---
+
+## 🟡 PHASE 0.5: SOCRATIC GATE — Clarifying Q&A
+
+> 🔴 **ONLY ask if ambiguous. Skip questions where answer is obvious from context or SRS.**
+
+### Rules
+- Ask **max 5 questions** total
+- If SRS exists → skip general questions, only ask about **SRS ambiguities**
+- If answer is clear from the user's request → **skip that question silently**
+- User is on **CLI** → present options as a **numbered list** (arrow key navigation style)
+- Wait for ALL answers before proceeding to planning
+
+### Question Format (CLI-style)
+
+```
+? [Question text]
+  › 1. [Option 1]       ← user navigates with ↑↓ and presses Enter
+    2. [Option 2]
+    3. [Option 3]
+    4. Other (mô tả thêm)
+```
+
+### Standard Question Bank
+
+**Q1 — Project Type** *(skip if obvious from request)*
+```
+? Loại dự án:
+  › 1. Web App (chạy trên browser)
+    2. Mobile App (iOS / Android)
+    3. Backend API only
+    4. Full-stack (Backend + Web)
+    5. Full-stack (Backend + Mobile)
+```
+
+**Q2 — Scope** *(skip if SRS defines it)*
+```
+? Phạm vi triển khai:
+  › 1. MVP — chỉ tính năng cốt lõi
+    2. Full — tất cả tính năng trong yêu cầu
+    3. Phần mở rộng — tích hợp vào codebase sẵn có
+```
+
+**Q3 — Tech Stack** *(skip if codebase already exists)*
+```
+? Tech stack:
+  › 1. Giữ nguyên (đã có codebase)
+    2. Spring Boot + Angular
+    3. Spring Boot + React
+    4. Node.js + React / Next.js
+    5. Khác (gõ vào)
+```
+
+**Q4 — Timeline / Priority** *(skip if not relevant)*
+```
+? Ưu tiên:
+  › 1. Nhanh — ít task, implement thẳng
+    2. Chuẩn — đủ task, có test
+    3. Kỹ — đầy đủ task, test, rollback plan
+```
+
+**Q5 — Ambiguity** *(custom — based on what's unclear in the request/SRS)*
+```
+? [Custom ambiguous point found in request]
+  › 1. [Option A]
+    2. [Option B]
+    3. [Option C]
+```
+
+> 💡 **Tip:** Group questions together if possible. Do NOT ask one by one across multiple turns.
 
 > 🔴 **OS Rule:** Use OS-appropriate commands!
 > - Windows → Use Claude Write tool for files, PowerShell for commands

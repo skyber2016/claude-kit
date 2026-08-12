@@ -41,7 +41,20 @@ Before any schema work, answer:
 - **Queries**: What are the main query patterns?
 - **Scale**: What's the expected data volume?
 
-→ If any of these are unclear → **ASK USER**
+→ If any of these are unclear → **ASK USER (using CLI-style format)**:
+
+```
+? Expected data volume/scale:
+  › 1. Small (Low traffic, <1GB)
+    2. Medium (Moderate traffic, standard apps)
+    3. High (High traffic, big data)
+
+? Query patterns complexity:
+  › 1. Simple CRUD mostly
+    2. Complex joins and reporting
+    3. Real-time / Timeseries
+    4. Search / Vector similarity
+```
 
 ### Phase 2: Platform Selection
 
