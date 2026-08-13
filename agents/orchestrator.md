@@ -65,7 +65,7 @@ Do you approve? (Y/N)
 
 ### Available specialist roles
 
-These are custom subagent types defined in the plugin's `agents/` directory.
+These are custom subagent types defined in the plugin's `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/` directory.
 Reference them by name when spawning teammates:
 
 | Role | Name | Primary responsibility |
