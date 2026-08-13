@@ -1,7 +1,7 @@
 ---
 name: wf_orchestrate
-description: Coordinate multiple agents for complex tasks. Use for multi-perspective analysis, comprehensive reviews, or tasks requiring different domain expertise.
-version: 1.0.0
+description: "Coordinate multiple agents for complex tasks using Claude Code Agent Teams. Use for multi-perspective analysis, comprehensive reviews, or tasks requiring different domain expertise."
+version: 2.0.0
 requires_agents: orchestrator
 requires_skills: parallel-agents, coordinator-mode
 artifact_outputs: task-graph, coordination-status, final-synthesis
@@ -9,190 +9,208 @@ artifact_outputs: task-graph, coordination-status, final-synthesis
 
 # Multi-Agent Orchestration
 
-You are now in **ORCHESTRATION MODE**. Your task: coordinate specialized agents to solve this complex problem.
+You are now in **ORCHESTRATION MODE**. Your task: coordinate specialist agents via Claude Code **Agent Teams** to solve this complex problem.
 
 ## Task to Orchestrate
 $ARGUMENTS
 
 ---
 
-## 🔴 CRITICAL: Minimum Agent Requirement
+## 🔴 CRITICAL: Read Orchestrator Agent
 
-> ⚠️ **ORCHESTRATION = MINIMUM 3 DIFFERENT AGENTS**
-> 
-> If you use fewer than 3 agents, you are NOT orchestrating - you're just delegating.
-> 
-> **Validation before completion:**
-> - Count invoked agents
-> - If `agent_count < 3` → STOP and invoke more agents
-> - Single agent = FAILURE of orchestration
-
-### Agent Selection Matrix
-
-| Task Type | REQUIRED Agents (minimum) |
-|-----------|---------------------------|
-| **Web App** | frontend-specialist, backend-specialist, test-engineer |
-| **API** | backend-specialist, security-auditor, test-engineer |
-| **UI/Design** | frontend-specialist, seo-specialist, performance-optimizer |
-| **Database** | database-architect, backend-specialist, security-auditor |
-| **Full Stack** | project-planner, frontend-specialist, backend-specialist, devops-engineer |
-| **Debug** | debugger, explorer-agent, test-engineer |
-| **Security** | security-auditor, penetration-tester, devops-engineer |
+> **MANDATORY:** Before any orchestration, read and apply:
+> `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/orchestrator.md`
+>
+> This agent defines the full Agent Teams coordination protocol.
 
 ---
 
-## Pre-Flight: Mode Check
+## ⚡ Phase 0: Pre-Flight Check
 
-| Current Mode | Task Type | Action |
-|--------------|-----------|--------|
-| **plan** | Any | ✅ Proceed with planning-first approach |
-| **edit** | Simple execution | ✅ Proceed directly |
-| **edit** | Complex/multi-file | ⚠️ Ask: "This task requires planning. Switch to plan mode?" |
-| **ask** | Any | ⚠️ Ask: "Ready to orchestrate. Switch to edit or plan mode?" |
+### 0.1 — Agent Teams availability
+
+Check if `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` is set:
+- **Available** → Proceed with Agent Teams (primary mode)
+- **Unavailable** → Fall back to Subagent Mode (see [Fallback](#-fallback-subagent-mode) below)
+
+### 0.2 — Codebase context (parallel)
+
+Launch 2 read-only subagents to gather context concurrently:
+
+```
+Agent(Explore): "Read llm-full.md at the project root.
+  If it exists, extract codebase architecture, conventions, and tech stack.
+  If not found, report NO_LLM_CONTEXT."
+
+Agent(Explore): "Check if .wiki/{task-slug}/plan.md exists.
+  If found, read the plan content and report PLAN_EXISTS with the content.
+  If not found, report NO_PLAN."
+```
+
+> ⏳ Wait for both to complete before proceeding.
 
 ---
 
-## 🔴 STRICT 2-PHASE ORCHESTRATION
+## 📋 Phase 1: Planning (Team lead only — NO teammates yet)
 
-### PHASE 1: PLANNING (Sequential - NO parallel agents)
+### If NO plan exists:
 
-| Step | Agent | Action |
-|------|-------|--------|
-| 1 | `project-planner` | Create `.wiki/{task-slug}/plan.md` |
-| 2 | (optional) `explorer-agent` | Codebase discovery if needed |
+1. Read and apply `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
+2. If `llm-full.md` was found → use its context for codebase conventions
+3. Create `.wiki/{task-slug}/plan.md` with task breakdown
+4. **STOP** — present plan for approval
 
-> 🔴 **NO OTHER AGENTS during planning!** Only project-planner and explorer-agent.
+### If plan EXISTS + not yet approved:
+
+Present the plan summary and ask for approval.
 
 ### ⏸️ CHECKPOINT: User Approval
 
 ```
-After {task-slug}.md is complete, ASK:
+✅ Plan created: .wiki/{task-slug}/plan.md
 
-"✅ Plan created: .wiki/{task-slug}/plan.md
+📋 Tasks identified: X
+🎯 Domains: [list domains]
+👥 Teammates needed: [list roles]
 
 Do you approve? (Y/N)
-- Y: Start implementation
-- N: I'll revise the plan"
+- Y: Start spawning teammates
+- N: I'll revise the plan
 ```
 
-> 🔴 **DO NOT proceed to Phase 2 without explicit user approval!**
-
-### PHASE 2: IMPLEMENTATION (Parallel agents after approval)
-
-| Parallel Group | Agents |
-|----------------|--------|
-| Foundation | `database-architect`, `security-auditor` |
-| Core | `backend-specialist`, `frontend-specialist` |
-| Polish | `test-engineer`, `devops-engineer` |
-
-> ✅ After user approval, invoke multiple agents in PARALLEL.
-
-## Available Agents (20 total)
-
-| Agent | Domain | Use When |
-|-------|--------|----------|
-| `project-planner` | Planning | Task breakdown, `.wiki/{task-slug}/plan.md` |
-| `explorer-agent` | Discovery | Codebase mapping |
-| `frontend-specialist` | UI/UX | React, Vue, CSS, HTML |
-| `backend-specialist` | Server | API, Node.js, Python |
-| `database-architect` | Data | SQL, NoSQL, Schema |
-| `security-auditor` | Security | Vulnerabilities, Auth |
-| `penetration-tester` | Security | Active testing |
-| `test-engineer` | Testing | Unit, E2E, Coverage |
-| `qa-automation-engineer` | QA | E2E pipelines, test automation |
-| `devops-engineer` | Ops | CI/CD, Docker, Deploy |
-| `mobile-developer` | Mobile | React Native, Flutter |
-| `performance-optimizer` | Speed | Lighthouse, Profiling |
-| `seo-specialist` | SEO | Meta, Schema, Rankings |
-| `documentation-writer` | Docs | README, API docs |
-| `debugger` | Debug | Error analysis |
-| `game-developer` | Games | Unity, Godot |
-| `code-archaeologist` | Legacy | Refactoring, legacy code |
-| `product-manager` | Product | Requirements, user stories |
-| `product-owner` | Product | Backlog, MVP, strategy |
-| `orchestrator` | Meta | Coordination |
+> 🔴 **DO NOT spawn teammates without explicit user approval!**
 
 ---
 
-## Orchestration Protocol
+## 🏗️ Phase 2: Team Assembly (Spawn teammates)
 
-### Step 1: Analyze Task Domains
+### 2.1 — Analyze task domains
+
 Identify ALL domains this task touches:
+
 ```
-□ Security     → security-auditor, penetration-tester
 □ Backend/API  → backend-specialist
 □ Frontend/UI  → frontend-specialist
 □ Database     → database-architect
-□ Testing      → test-engineer
+□ Security     → security-auditor, penetration-tester
+□ Testing      → test-engineer, qa-automation-engineer
 □ DevOps       → devops-engineer
 □ Mobile       → mobile-developer
 □ Performance  → performance-optimizer
 □ SEO          → seo-specialist
-□ Planning     → project-planner
+□ Legacy code  → code-archaeologist
+□ Product      → product-manager, product-owner
+□ Games        → game-developer
 ```
 
-### Step 2: Phase Detection
+### 2.2 — Select team size
 
-| If Plan Exists | Action |
-|----------------|--------|
-| NO `.wiki/{task-slug}/plan.md` | → Go to PHASE 1 (planning only) |
-| YES `.wiki/{task-slug}/plan.md` + user approved | → Go to PHASE 2 (implementation) |
+| Task complexity | Recommended team |
+|---|---|
+| Simple (1-2 domains) | 2-3 teammates |
+| Medium (3-4 domains) | 3-4 teammates |
+| Complex (full-stack) | 4-5 teammates |
 
-### Step 3: Execute Based on Phase
+### 2.3 — Recommended team by task type
 
-**PHASE 1 (Planning):**
+| Task Type | Spawn these teammates |
+|---|---|
+| **Web App** | `frontend-specialist`, `backend-specialist`, `test-engineer` |
+| **API** | `backend-specialist`, `security-auditor`, `test-engineer` |
+| **UI/Design** | `frontend-specialist`, `seo-specialist`, `performance-optimizer` |
+| **Database** | `database-architect`, `backend-specialist`, `security-auditor` |
+| **Full Stack** | `backend-specialist`, `frontend-specialist`, `test-engineer`, `devops-engineer` |
+| **Debug** | `debugger`, `test-engineer` (+ domain specialist) |
+| **Security** | `security-auditor`, `penetration-tester`, `devops-engineer` |
+
+### 2.4 — Spawn teammates
+
+Tell Claude what teammates to spawn. **Name each teammate explicitly** so you can reference them later:
+
 ```
-Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create `.wiki/{task-slug}/plan.md`
-→ STOP after plan is created
-→ ASK user for approval
-```
+Spawn {N} teammates to {task summary}:
+- A {role} teammate named "{name}" to {specific task}
+  Context: [plan content] + [llm-full.md summary if available]
+- A {role} teammate named "{name}" to {specific task}
+  Context: [plan content] + [llm-full.md summary if available]
+- ...
 
-**PHASE 2 (Implementation - after approval):**
-```
-Invoke agents in PARALLEL:
-Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/frontend-specialist.md` to [task]
-Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/backend-specialist.md` to [task]
-Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/test-engineer.md` to [task]
-```
-
-**🔴 CRITICAL: Context Passing (MANDATORY)**
-
-When invoking ANY subagent, you MUST include:
-
-1. **Original User Request:** Full text of what user asked
-2. **Decisions Made:** All user answers to Socratic questions
-3. **Previous Agent Work:** Summary of what previous agents did
-4. **Current Plan State:** If plan files exist in workspace, include them
-
-**Example with FULL context:**
-```
-Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md` to create `.wiki/{task-slug}/plan.md`:
-
-**CONTEXT:**
-- User Request: "A social platform for students, using mock data"
-- Decisions: Tech=Vue 3, Layout=Grid Widgets, Auth=Mock, Design=Youthful & dynamic
-- Previous Work: Orchestrator asked 6 questions, user chose all options
-- Current Plan: playful-roaming-dream.md exists in workspace with initial structure
-
-**TASK:** Create detailed `.wiki/{task-slug}/plan.md` based on ABOVE decisions. Do NOT infer from folder name.
+Require plan approval before they make changes.
 ```
 
-> ⚠️ **VIOLATION:** Invoking subagent without full context = subagent will make wrong assumptions!
-
-
-### Step 4: Verification (MANDATORY)
-The LAST agent must run appropriate verification scripts:
-```bash
-python skills/vulnerability-scanner/scripts/security_scan.py .
-python skills/lint-and-validate/scripts/lint_runner.py .
-```
-
-### Step 5: Synthesize Results
-Combine all agent outputs into unified report.
+> 💡 **Context passing:** Each teammate loads project CLAUDE.md and MCP servers automatically.
+> But they do NOT inherit the lead's conversation. Include plan content and key decisions in each spawn prompt.
 
 ---
 
-## Output Format
+## 📝 Phase 3: Task Assignment & Coordination
+
+### 3.1 — Create shared task list with dependencies
+
+```
+Create these tasks:
+1. "{task description}" - assign to {teammate-name}
+2. "{task description}" - depends on task 1, assign to {teammate-name}
+3. "{task description}" - depends on task 1, assign to {teammate-name}
+4. "{task description}" - depends on tasks 2,3, assign to {teammate-name}
+```
+
+### 3.2 — File ownership rules
+
+> 🔴 **Two teammates must NOT edit the same file concurrently.**
+
+| File area | Owner |
+|---|---|
+| `**/api/**`, `**/server/**`, `**/service/**` | `backend-specialist` |
+| `**/components/**`, `**/pages/**`, client UI | `frontend-specialist` |
+| `**/*.test.*`, `**/__tests__/**` | `test-engineer` |
+| Schema, migration files | `database-architect` |
+| CI/CD config, Dockerfiles | `devops-engineer` |
+| Security policies | `security-auditor` |
+
+### 3.3 — Monitor progress
+
+- Check `/tasks` to see task status and teammate progress.
+- Use agent panel (↑↓ arrows) to select and view teammates.
+- Press Enter on a teammate to view transcript and message them.
+- Press Esc to interrupt a teammate's current turn.
+- Press Ctrl+T to toggle the task list.
+
+> ⚠️ If the lead starts implementing tasks itself:
+> `"Wait for your teammates to complete their tasks before proceeding."`
+
+---
+
+## ✅ Phase 4: Integration & Verification
+
+After all teammates complete their tasks:
+
+1. **Review outputs**: check each teammate's artifacts and changed files.
+2. **Resolve conflicts**: if teammates made conflicting changes, the lead resolves them.
+3. **Run verification**:
+   ```bash
+   # Build check (use project's actual build command)
+   npm run build  # or mvn compile, cargo build, etc.
+
+   # Test suite
+   npm test  # or equivalent
+
+   # Lint
+   npm run lint  # or equivalent
+   ```
+4. **Synthesize results** into the final report.
+
+### Conflict resolution priority
+
+1. User-approved requirements and security constraints
+2. Executable evidence (tests pass, build succeeds)
+3. Project architecture and ownership boundaries
+4. Specialist teammate recommendations
+5. Minimal-change and backward-compatibility preference
+
+---
+
+## 📊 Phase 5: Final Report
 
 ```markdown
 ## 🎼 Orchestration Report
@@ -200,47 +218,74 @@ Combine all agent outputs into unified report.
 ### Task
 [Original task summary]
 
-### Mode
-[Current Claude mode: plan/edit/ask]
+### Team Composition
+| # | Teammate | Role | Tasks Completed |
+|---|----------|------|-----------------|
+| 1 | {name} | {role} | {count} |
+| 2 | {name} | {role} | {count} |
+| 3 | {name} | {role} | {count} |
 
-### Agents Invoked (MINIMUM 3)
-| # | Agent | Focus Area | Status |
-|---|-------|------------|--------|
-| 1 | project-planner | Task breakdown | ✅ |
-| 2 | frontend-specialist | UI implementation | ✅ |
-| 3 | test-engineer | Verification scripts | ✅ |
+### Completed
+- [Bounded outcomes with file paths]
 
-### Verification Scripts Executed
-- [x] security_scan.py → Pass/Fail
-- [x] lint_runner.py → Pass/Fail
+### Verification
+- Build: ✅/❌
+- Tests: ✅/❌ (X/Y passing)
+- Lint: ✅/❌
 
-### Key Findings
-1. **[Agent 1]**: Finding
-2. **[Agent 2]**: Finding
-3. **[Agent 3]**: Finding
-
-### Deliverables
-- [ ] `.wiki/{task-slug}/plan.md` created
-- [ ] Code implemented
-- [ ] Tests passing
-- [ ] Scripts verified
-
-### Summary
-[One paragraph synthesis of all agent work]
+### Remaining decisions
+- [Only unresolved, material items]
 ```
 
 ---
 
-## 🔴 EXIT GATE
+## 🔄 Fallback: Subagent Mode
 
-Before completing orchestration, verify:
+If Agent Teams is unavailable (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` not set):
 
-1. ✅ **Agent Count:** `invoked_agents >= 3`
-2. ✅ **Scripts Executed:** At least `security_scan.py` ran
-3. ✅ **Report Generated:** Orchestration Report with all agents listed
+1. **Announce**: `"⚠️ Agent Teams unavailable. Falling back to subagent mode."`
+2. Use `Agent(type)` tool calls with background execution instead.
+3. Subagents run concurrently in background but **cannot communicate with each other**.
 
-> **If any check fails → DO NOT mark orchestration complete. Invoke more agents or run scripts.**
+### Fallback invocation pattern
+
+```
+Agent(backend-specialist): "Implement the user registration endpoint.
+  Context: [paste plan content] + [paste llm-full.md summary]
+  Allowed files: src/api/**, src/service/**
+  Write the controller, service, and DTO files."
+
+Agent(frontend-specialist): "Build the registration form component.
+  Context: [paste plan content] + [paste llm-full.md summary]
+  Allowed files: src/components/**, src/pages/**
+  Follow existing component patterns."
+
+Agent(test-engineer): "Write integration tests for auth endpoints.
+  Context: [paste plan content]
+  Allowed files: **/*.test.*, **/__tests__/**
+  Cover registration and login flows."
+```
+
+> 🔴 **Fallback limitations:**
+> - No inter-agent communication (teammates can't discuss)
+> - No shared task list (lead tracks everything)
+> - Results return to lead context (may fill up with many agents)
+> - Use maximum 3-4 subagents to avoid context overflow
 
 ---
 
-**Begin orchestration now. Select 3+ agents, execute sequentially, run verification scripts, synthesize results.**
+## 🛑 Exit Gate
+
+Before completing orchestration, verify:
+
+1. ✅ **Plan approved** by user before implementation
+2. ✅ **All tasks completed** in the shared task list
+3. ✅ **Build passes** — no compilation/build errors
+4. ✅ **Tests pass** — test suite green
+5. ✅ **Report generated** — Orchestration Report with team composition
+
+> **If any check fails → DO NOT mark orchestration complete. Fix issues or report blockers.**
+
+---
+
+**Begin orchestration now. Read `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/orchestrator.md`, then analyze task domains, plan, and spawn teammates.**

@@ -1,7 +1,7 @@
 ---
 name: wf_plan
-description: Create project plan. Supports `init`, `export` subcommands. Auto-detects OpenSpec for structured spec-driven planning or classic plan.md.
-version: 2.2.0
+description: "Create project plan. Supports init, export subcommands. Auto-detects OpenSpec for structured spec-driven planning or classic plan.md."
+version: 3.0.0
 requires_agents: project-planner
 requires_skills: plan-writing, architecture
 artifact_outputs: implementation-plan
@@ -86,49 +86,93 @@ Parse `$ARGUMENTS` to determine the subcommand:
 2. **Read and apply the knowledge from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`**
 3. **Socratic Gate** - Ask clarifying questions before planning
 4. **Dynamic Naming** - Plan named based on task
-
-### 📄 SRS Detection (BEFORE OpenSpec Detection)
-
-Check if an SRS folder exists for this topic:
-
-```bash
-# Check for exact match or fuzzy match
-ls .wiki/*/srs.md 2>/dev/null
-```
-
-**If `.wiki/<name>/srs.md` exists:**
-- Announce: `"📄 SRS found: .wiki/<name>/srs.md → Reading..."`
-- Read the SRS file completely
-- Read any referenced images in `attachments/`
-- Use the SRS as the **primary source of truth** for planning
-- The Socratic Gate focuses on **clarifying SRS ambiguities**, not general discovery
-- Update README.md status to `## Status: 📋 Planning`
-
-**If no SRS found:**
-- Proceed with normal planning (from user's text description)
-
-### 🔍 OpenSpec Detection
-
-```bash
-test -d openspec/ && echo "SDD_MODE" || echo "CLASSIC_MODE"
-```
-
-Announce the mode:
-- **SDD_MODE**: `"📋 OpenSpec detected → Creating structured spec (proposal + specs + design + tasks)"`
-- **CLASSIC_MODE**: `"📋 Classic plan mode → Creating .wiki/{task-slug}/plan.md"`
+5. **Use Agent tool** - Parallelize independent work via background subagents
 
 ---
 
-### Behavior — CLASSIC_MODE (no OpenSpec)
+### ⚡ Phase 0: Parallel Context Gathering (SPEED OPTIMIZATION)
 
-1. Follow Phase -1 (Context Check) from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
-2. Follow **Phase 0.5 (Socratic Gate)** from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
-   - Present questions as **CLI-style numbered list** (user dùng phím mũi tên chọn)
-   - **If SRS exists**: Skip Q1–Q3, only ask about SRS ambiguities via Q5 (custom)
-   - **If no SRS**: Ask Q1→Q2→Q3 (skip if obvious), then any custom Q5
-   - Group all questions in **one single message** — do NOT ask one-by-one
-3. Create `.wiki/{task-slug}/plan.md` with task breakdown
-4. DO NOT write any code files
+> 🔴 **MANDATORY:** Use Claude Code's **Agent tool** to launch ALL context readers simultaneously.
+> Subagents run in **background** by default = concurrent execution.
+
+Invoke **3 subagents via Agent tool** — all 3 run concurrently in background:
+
+| # | Agent Type | Task Prompt | Returns |
+|---|------------|-------------|---------|
+| 🅰 | `Explore` | Read `llm-full.md` at project root | Codebase architecture, feature creation guidelines, tech stack conventions |
+| 🅱 | `Explore` | Search `.wiki/*/srs.md` for matching SRS | SRS content, folder name, attachment list |
+| 🅲 | `general-purpose` | Check `openspec/` + read `project-planner.md` | `SDD_MODE` or `CLASSIC_MODE` + planner knowledge |
+
+**Implementation — invoke via Agent tool (all 3 calls in sequence, they run concurrently in background):**
+
+```
+Agent(Explore): "Read the file llm-full.md at the project root.
+  If it exists, extract and summarize:
+  1. Codebase architecture (modules, packages, layers)
+  2. Feature creation guidelines (conventions, naming, file structure)
+  3. Tech stack (frameworks, libraries, config patterns)
+  If the file does not exist, report NO_LLM_CONTEXT."
+
+Agent(Explore): "Search for .wiki/*/srs.md matching the topic '<topic>'.
+  If found: read the full SRS file, list files in the attachments/ folder.
+  If not found: report NO_SRS."
+
+Agent(general-purpose): "Check if the openspec/ directory exists and report SDD_MODE or CLASSIC_MODE.
+  Also read ~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md
+  and extract Phase -1 (Context Check) + Phase 0.5 (Socratic Gate) rules.
+  Return the mode and the extracted planner rules."
+```
+
+> ⏳ **Wait for ALL 3 background subagents to complete before proceeding to Phase 1.**
+
+> 💡 **Why Explore for 🅰🅱?** Read-only tasks within the project — faster and cheaper.
+> **Why general-purpose for 🅲?** Needs to read files outside the project (`~/.claude/plugins/...`).
+
+---
+
+### 📋 Phase 1: Merge Context & Announce
+
+After all subagents return, merge results and announce:
+
+**LLM Context (from 🅰):**
+- If found → `"📚 Codebase context: llm-full.md → Loaded"`
+- If not found → (silent, no announcement)
+
+**SRS (from 🅱):**
+- If found → `"📄 SRS found: .wiki/<name>/srs.md → Loaded"`
+- If found → Update README.md status to `## Status: 📋 Planning`
+- If not found → (silent, proceed with user's text description)
+
+**Mode (from 🅲):**
+- **SDD_MODE** → `"📋 OpenSpec detected → Creating structured spec (proposal + specs + design + tasks)"`
+- **CLASSIC_MODE** → `"📋 Classic plan mode → Creating .wiki/{task-slug}/plan.md"`
+
+---
+
+### 🗣️ Phase 2: Socratic Gate (Sequential — requires user interaction)
+
+Apply **Phase 0.5 (Socratic Gate)** rules from subagent 🅲's output:
+
+- Present questions as **CLI-style numbered list** (user dùng phím mũi tên chọn)
+- **If SRS exists** (from 🅱): Skip Q1–Q3, only ask about SRS ambiguities via Q5 (custom)
+- **If no SRS**: Ask Q1→Q2→Q3 (skip if obvious), then any custom Q5
+- **If `llm-full.md` exists** (from 🅰): Skip Q3 (Tech Stack) since it's already known from codebase context
+- Group all questions in **one single message** — do NOT ask one-by-one
+- If ambiguity would affect scope or behavior, ask before creating plan
+
+> ⏳ **Wait for user answers before proceeding to Phase 3.**
+
+---
+
+### 🏗️ Phase 3: Create Plan (mode-dependent)
+
+#### Behavior — CLASSIC_MODE (no OpenSpec)
+
+1. Apply Phase -1 (Context Check) knowledge from subagent 🅲
+2. Apply `llm-full.md` context from subagent 🅰 (if available) — ensure plan follows existing codebase conventions
+3. Apply SRS from subagent 🅱 as primary source of truth (if available)
+4. Create `.wiki/{task-slug}/plan.md` with task breakdown
+5. DO NOT write any code files
 
 #### Naming Rules (Classic)
 
@@ -156,35 +200,65 @@ Update README.md status to `## Status: ✅ Planned`
 
 ---
 
-### Behavior — SDD_MODE (OpenSpec detected)
+#### Behavior — SDD_MODE (OpenSpec detected)
 
-1. **Understand the request and clarify material ambiguity**
-   - Apply **Phase 0.5 (Socratic Gate)** from `~/.claude/plugins/marketplaces/claude-kit-marketplace/agents/project-planner.md`
-   - Present questions as **CLI-style numbered list** (user dùng phím mũi tên chọn)
-   - **If SRS exists**: Read SRS first, skip Q1–Q3, ask about SRS ambiguities only via Q5
-   - Group all questions in **one single message** — do NOT ask one-by-one
-   - If ambiguity would affect scope or behavior, ask before creating change
-
-2. **Create OpenSpec change**
+1. **Create OpenSpec change** (sequential — needs name first)
    - Derive kebab-case name from request or SRS folder name
    - Read `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-propose]` for full propose protocol
    - Run: `openspec new change "<name>" --json`
 
-3. **Generate artifacts in order**
-   - For each artifact, get instructions: `openspec instructions <artifact> --change "<name>" --json`
-   - **If SRS exists**: Use SRS content as input context for all artifacts
-   - Create artifacts in dependency order:
-     - `proposal.md` — what & why (reference SRS Use Case ID)
-     - `specs/<capability>/spec.md` — delta specs (ADDED/MODIFIED/REMOVED)
-     - `design.md` — how (architecture, patterns)
-     - `tasks.md` — implementation steps with checkboxes
+2. **Generate artifacts with parallel Agent tool calls** (SPEED OPTIMIZATION)
 
-4. **Copy SRS reference** into change directory:
+   > 🔴 **Parallelize where dependency allows. Use Agent tool with background execution.**
+
+   **Round 1 — Invoke 2 subagents via Agent tool (run concurrently in background):**
+
+   | # | Artifact | Input |
+   |---|----------|-------|
+   | 🅳 | `proposal.md` — what & why | User request + SRS (from 🅱) + LLM context (from 🅰) |
+   | 🅴 | `specs/<capability>/spec.md` — delta specs | User request + SRS (from 🅱) + LLM context (from 🅰) |
+
+   ```
+   Agent(general-purpose): "Create proposal.md for OpenSpec change '<name>'.
+     Context: [paste user request] + [paste SRS content if available] + [paste llm-full.md summary]
+     Run: openspec instructions proposal --change '<name>' --json
+     Write the proposal.md file with what & why, reference SRS Use Case IDs."
+
+   Agent(general-purpose): "Create specs/<capability>/spec.md for OpenSpec change '<name>'.
+     Context: [paste user request] + [paste SRS content if available] + [paste llm-full.md summary]
+     Run: openspec instructions specs --change '<name>' --json
+     Write delta specs (ADDED/MODIFIED/REMOVED)."
+   ```
+
+   > ⏳ **Wait for 🅳 + 🅴 background subagents to complete.**
+
+   **Round 2 — Invoke 2 subagents via Agent tool (run concurrently in background):**
+
+   | # | Artifact | Input |
+   |---|----------|-------|
+   | 🅵 | `design.md` — architecture & patterns | Proposal (🅳) + Specs (🅴) + LLM context (🅰) |
+   | 🅶 | `tasks.md` — implementation steps | Proposal (🅳) + Specs (🅴) + LLM context (🅰) |
+
+   ```
+   Agent(general-purpose): "Create design.md for OpenSpec change '<name>'.
+     Context: [paste proposal.md content] + [paste specs content] + [paste llm-full.md summary]
+     Run: openspec instructions design --change '<name>' --json
+     Write design.md with architecture decisions and patterns."
+
+   Agent(general-purpose): "Create tasks.md for OpenSpec change '<name>'.
+     Context: [paste proposal.md content] + [paste specs content] + [paste llm-full.md summary]
+     Run: openspec instructions tasks --change '<name>' --json
+     Write tasks.md with implementation steps and checkboxes."
+   ```
+
+   > ⏳ **Wait for 🅵 + 🅶 background subagents to complete.**
+
+3. **Copy SRS reference** into change directory (if SRS exists):
    ```bash
    cp .wiki/<name>/srs.md openspec/changes/<name>/srs-reference.md
    ```
 
-5. **Planning boundary**
+4. **Planning boundary**
    - Do NOT edit project code — only create planning artifacts
    - Do NOT start implementation in the same response
 
@@ -200,6 +274,8 @@ Update README.md status to `## Status: ✅ Planned`
 - design.md ✅
 - tasks.md ✅ (X tasks)
 - srs-reference.md ✅ (copy of SRS)
+
+⚡ Speed: Used parallel subagents (3 context + 4 artifact workers)
 
 Next steps:
 - Review the artifacts above
