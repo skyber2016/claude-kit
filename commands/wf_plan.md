@@ -13,6 +13,33 @@ $ARGUMENTS
 
 ---
 
+## 🏗️ MONOREPO DETECTION (BEFORE ROUTING)
+
+```bash
+git submodule status
+```
+
+| Result | Action |
+|--------|--------|
+| Has entries | → **Recommend `/wf_fullstack`** (full orchestration) |
+| Empty | → Proceed to Subcommand Routing below |
+
+**If monorepo detected**, announce:
+```
+🏗️ MONOREPO detected (git submodules found).
+
+For full-stack monorepo development with Agent Teams, use:
+  /wf_fullstack <name>
+
+This orchestrates: branch → DB schema → planning → API contract → backend + frontend (parallel) → tests → archive.
+
+/wf_plan will still work for planning-only tasks. Continue? (Y/N)
+```
+
+If user confirms to continue with `/wf_plan` → proceed to routing below.
+
+---
+
 ## 🔀 Subcommand Routing (MANDATORY FIRST STEP)
 
 Parse `$ARGUMENTS` to determine the subcommand:
@@ -192,6 +219,7 @@ Apply **Phase 0.5 (Socratic Gate)** rules from subagent 🅲's output:
 
 Next steps:
 - Review the plan
+- [Backend project] Run /wf_api_contract <name> để tạo DRAFT openapi.yaml ngay bây giờ
 - Run /wf_create to start implementation
 - Or modify plan manually
 ```
@@ -279,6 +307,7 @@ Update README.md status to `## Status: ✅ Planned`
 
 Next steps:
 - Review the artifacts above
+- [Backend project] Run /wf_api_contract <name> để tạo DRAFT openapi.yaml từ specs
 - Run /wf_create to start implementation
 - Or /wf_plan <name> again to revise
 ```
@@ -317,10 +346,12 @@ Update README.md status to `## Status: ✅ Planned (SDD)`
     ↓ User downloads SRS vào .wiki/ngan-hang-thu-huong/srs.md
 /wf_plan ngan-hang-thu-huong
     ↓ Claude reads SRS → creates plan/specs
+/wf_api_contract ngan-hang-thu-huong      ← DRAFT openapi.yaml (Frontend bắt đầu mock)
+    ↓
 /wf_create ngan-hang-thu-huong
     ↓ Implement Backend
-/wf_plan export ngan-hang-thu-huong
-    ↓ Generate api-contract.md → copy sang Frontend project
+/wf_api_contract export ngan-hang-thu-huong  ← FINAL openapi.yaml (validated from code)
+    ↓ Share openapi.yaml sang Frontend project
 /wf_verify
 /wf_test
 ```

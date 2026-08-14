@@ -28,6 +28,41 @@ When the user is ready to implement, they must start the apply workflow explicit
 
 **Store selection:** If the user names a store (a store is a standalone OpenSpec repo registered on this machine) or the work lives in one, run `openspec store list --json` to discover registered store ids, then pass `--store <id>` on the commands that read or write specs and changes (`new change`, `status`, `instructions`, `list`, `show`, `validate`, `archive`, `doctor`, `context`, `view`). Once selected, treat `--store <id>` as sticky for the rest of the workflow. Every unscoped example of those commands below is shorthand: before running it, append the flag. For example, run `openspec status --change "<name>" --json --store "<id>"`, not the unscoped form shown below. Other commands do not take the flag. Hints printed by commands already carry the flag; keep it on follow-ups. Without a store, commands act on the nearest local `openspec/` root.
 
+**🏗️ MONOREPO MODE:** Before creating any artifact, check if this is a monorepo:
+```bash
+git submodule status
+```
+- **Has entries** → `MONOREPO_MODE=true` — use **domain-split specs** structure (see below)
+- **Empty** → `MONOREPO_MODE=false` — use standard single-file `spec.md` per capability
+
+**Domain-split specs (MONOREPO_MODE=true):**
+
+Instead of a single `specs/<domain>/spec.md`, create **three files** per domain:
+```
+specs/<domain>/backend-spec.md    ← Spring Boot / .NET Core endpoints, entities, rules
+specs/<domain>/frontend-spec.md   ← Angular components, services, routes, state
+specs/<domain>/db-spec.md         ← Schema changes (Oracle/PG/MongoDB), migrations, rollback
+```
+
+Also create two extra root-level artifacts inside the change directory:
+```
+api-contract.md    ← API surface summary (endpoint list, auth, versioning)
+openapi.yaml       ← DRAFT OpenAPI 3.1 spec generated from backend-spec.md
+```
+
+In `tasks.md`, organize tasks by workspace and phase:
+```
+## Phase 0: Git & Database
+## Phase 1: API Contract (DRAFT)
+## Phase 2A: Backend (apps/backend)
+## Phase 2B: Frontend (apps/frontend)
+## Phase 2C: Database Finalization
+## Phase 3: Testing
+## Phase 4: Archive
+```
+
+
+
 **Input**: The user's request should include a change name (kebab-case) OR a description of what they want to build.
 
 **Steps**

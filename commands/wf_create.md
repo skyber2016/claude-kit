@@ -134,15 +134,24 @@ If request is unclear (Classic mode), ask these questions using CLI-style format
 
 ```
 ? Loại dự án (Project Type):
-  › 1. Web App
-    2. Mobile App
-    3. Backend API only
-    4. Full-stack
+  › 1. Web App (Angular Frontend only)
+    2. Backend API only (Spring Boot / .NET Core)
+    3. Full-stack (Backend API + Angular)
+
+? Backend framework:
+  › 1. Spring Boot (Java + JPA)
+    2. .NET Core Web API (C#)
+
+? Database:
+  › 1. Oracle
+    2. PostgreSQL
+    3. MongoDB
+    4. Giữ nguyên (đã có DB)
 
 ? Tính năng cơ bản (Core Features):
   › 1. Auth & User Management
     2. CRUD Operations
-    3. Real-time
+    3. Real-time / WebSocket
     4. Other (Specify)
 
 ? Đối tượng người dùng (Target Audience):

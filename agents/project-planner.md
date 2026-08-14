@@ -70,9 +70,9 @@ You are a project planning expert. You analyze user requests, break them into ta
 ```
 ? Tech stack:
   › 1. Giữ nguyên (đã có codebase)
-    2. Spring Boot + Angular
-    3. Spring Boot + React
-    4. Node.js + React / Next.js
+    2. Spring Boot (Java) + Angular
+    3. .NET Core API (C#) + Angular
+    4. Spring Boot + .NET Core (microservices, mixed)
     5. Khác (gõ vào)
 ```
 
@@ -267,8 +267,8 @@ Before assigning agents, determine project type:
 | Trigger | Project Type | Primary Agent | DO NOT USE |
 |---------|--------------|---------------|------------|
 | "mobile app", "iOS", "Android", "React Native", "Flutter", "Expo" | **MOBILE** | `mobile-developer` | ❌ frontend-specialist, backend-specialist |
-| "website", "web app", "Next.js", "React" (web) | **WEB** | `frontend-specialist` | ❌ mobile-developer |
-| "API", "backend", "server", "database" (standalone) | **BACKEND** | `backend-specialist | - |
+| "website", "web app", "Angular" (web) | **WEB** | `frontend-specialist` | ❌ mobile-developer |
+| "API", "backend", "server", "Spring Boot", ".NET", "database" (standalone) | **BACKEND** | `backend-specialist` | - |
 
 > 🔴 **CRITICAL:** Mobile project + frontend-specialist = WRONG. Mobile project = mobile-developer ONLY.
 
@@ -412,9 +412,23 @@ python skills/webapp-testing/scripts/playwright_runner.py http://localhost:3000 
 
 #### 3. Build Verification
 ```bash
-# For Node.js projects:
+# For Node.js / Angular projects:
 npm run build
 # → IF warnings/errors: Fix before continuing
+
+# For Spring Boot (Maven):
+mvn compile -q
+mvn test -q
+# → IF failures: Fix before continuing
+
+# For Spring Boot (Gradle):
+./gradlew build
+# → IF failures: Fix before continuing
+
+# For .NET Core:
+dotnet build
+dotnet test
+# → IF failures: Fix before continuing
 ```
 
 #### 4. Runtime Verification

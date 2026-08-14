@@ -163,10 +163,15 @@ Run `/wf_deploy rollback` if needed.
 
 | Platform | Command | Notes |
 |----------|---------|-------|
-| Vercel | `vercel --prod` | Auto-detected for Next.js |
-| Railway | `railway up` | Needs Railway CLI |
-| Fly.io | `fly deploy` | Needs flyctl |
-| Docker | `docker compose up -d` | For self-hosted |
+| **Angular** | `ng build --configuration=production` | Static files → serve with Nginx/Apache |
+| **Spring Boot (JAR)** | `mvn package -DskipTests` → `java -jar target/*.jar` | Fat JAR, runs anywhere with Java 17+ |
+| **Spring Boot (Docker)** | `docker build -t app .` → `docker run -p 8080:8080 app` | Dockerfile with multi-stage build |
+| **.NET Core** | `dotnet publish -c Release -o ./publish` | Self-contained or framework-dependent |
+| **.NET (Docker)** | `docker build -t app .` → `docker run -p 5000:5000 app` | Official .NET runtime image |
+| **Docker Compose** | `docker compose up -d` | Backend + DB + Frontend together |
+| **Kubernetes** | `kubectl apply -f k8s/` | For production orchestration |
+| **Azure App Service** | `az webapp deploy` | Best for .NET Core apps |
+| **AWS ECS / EKS** | Via ECR + task definition | For containerized deployments |
 
 ---
 
