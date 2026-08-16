@@ -5,7 +5,7 @@ description: >-
   test config files, environment setup, and dependencies. Reports what the user
   needs to fix before tests can run. Unit tests are optional.
   Requires skills: testing-patterns.
-when_to_use: "When user wants to check test readiness before running /wf_test or /wf_verify. Also auto-invoked as Phase 0 of wf_test when --preflight flag is used."
+when_to_use: "Invoked by /wf_test check sub-command. Also auto-runs when /wf_test detects nothing and falls back to readiness scan."
 allowed-tools: Read, Glob, Grep, Bash
 version: 1.0.0
 ---

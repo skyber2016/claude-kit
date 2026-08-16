@@ -1,40 +1,261 @@
 ---
 name: wf_test
-description: Test generation and execution. For projects without unit tests, generates API test scripts from SRS using curl.
-version: 2.0.0
+description: >-
+  Unified test workflow. Sub-commands: check (readiness), init (scaffold),
+  run/[target] (execute), coverage, watch. For API projects without unit tests,
+  generates curl-based test scripts from SRS. Unit tests are optional.
+version: 3.0.0
 requires_agents: test-engineer
-requires_skills: testing-patterns, verify-changes, api-test-runner
+requires_skills: testing-patterns, verify-changes, api-test-runner, wf-test-check
 artifact_outputs: test-report
 ---
 
-# /wf_test - Test Generation and Execution
+# /wf_test — Unified Test Workflow
 
 $ARGUMENTS
-
----
-
-## Purpose
-
-This command generates tests, runs existing tests, or checks test coverage.
 
 ---
 
 ## Sub-commands
 
 ```
-/wf_test                - Run all tests
-/wf_test [file/feature] - Generate tests for specific target
-/wf_test coverage       - Show test coverage report
-/wf_test watch          - Run tests in watch mode
+/wf_test                     Run all tests (auto-detect framework)
+/wf_test check               Pre-flight readiness scan — report missing configs
+/wf_test check mcp           MCP servers status only
+/wf_test check config        Test config files only
+/wf_test check api           API test prerequisites only
+/wf_test init                Scaffold test infrastructure files
+/wf_test init [stack]        Scaffold for specific stack (spring|angular|dotnet|node)
+/wf_test [file/feature]      Generate/run tests for specific target
+/wf_test coverage            Show test coverage report
+/wf_test watch               Run tests in watch mode
 ```
 
 ---
 
-## Behavior
+## 🔀 Sub-command Router
 
-### 🔍 Test Framework Detection (FIRST STEP)
+Parse `$ARGUMENTS` and route:
 
-Detect what test infrastructure exists:
+| Argument | Action |
+|----------|--------|
+| *(empty)* | → **Run** (Phase 3) |
+| `check` | → **Check** (Phase 1) |
+| `check mcp` | → **Check** (Phase 1, MCP only) |
+| `check config` | → **Check** (Phase 1, config only) |
+| `check api` | → **Check** (Phase 1, API only) |
+| `init` | → **Init** (Phase 2) |
+| `init [stack]` | → **Init** (Phase 2, specific stack) |
+| `coverage` | → **Run** (Phase 3, coverage mode) |
+| `watch` | → **Run** (Phase 3, watch mode) |
+| `[file/feature]` | → **Run** (Phase 3, targeted) |
+
+---
+
+## Phase 1: Check (Pre-Flight Readiness)
+
+📚 Using skill: `wf-test-check`
+
+**Read `skills/wf-test-check/SKILL.md`** and follow all phases.
+
+**Summary:** Scan project for missing MCP configs, test config files, dependencies.
+Output readiness report. Does NOT fix anything.
+
+**Key rules:**
+- ⚪ Unit tests are **OPTIONAL** — report as optional, never blocker
+- ❌ Missing required configs are **BLOCKERS**
+- ✅ Don't auto-fix — only report and suggest commands
+- 📋 Monorepo — scan each submodule independently
+- Save report to `.wiki/{slug}/test-readiness.md`
+
+---
+
+## Phase 2: Init (Scaffold Test Infrastructure)
+
+> Scaffold the minimal test files needed for a project.
+> Does NOT generate test cases — only creates config/structure files.
+
+### 2.1 Auto-detect or Use Argument
+
+```
+/wf_test init          → auto-detect from pom.xml / angular.json / *.csproj / package.json
+/wf_test init spring   → force Spring Boot scaffold
+/wf_test init angular  → force Angular scaffold
+/wf_test init dotnet   → force .NET Core scaffold
+/wf_test init node     → force Node.js scaffold
+```
+
+### 2.2 Scaffold Templates Per Stack
+
+#### Spring Boot (Java)
+
+```
+Files to create:
+├── src/test/resources/
+│   └── application-test.yml          ← Test profile config
+├── .wiki/{feature}/
+│   ├── srs.md                        ← SRS template (for API test generation)
+│   └── README.md                     ← Feature tracking
+└── .env.test                         ← Test credentials (gitignored)
+```
+
+**`application-test.yml` template:**
+```yaml
+# Test profile configuration
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  security:
+    user:
+      name: admin
+      password: admin123
+```
+
+**`.env.test` template:**
+```env
+# Test credentials — DO NOT commit to git
+BASE_URL=http://localhost:8080
+LOGIN_USER=admin
+LOGIN_PASS=admin123
+TEST_PROFILE=test
+```
+
+#### Angular
+
+```
+Files to create:
+├── src/
+│   └── environments/
+│       └── environment.test.ts       ← Test environment config
+├── .wiki/{feature}/
+│   ├── srs.md                        ← SRS template
+│   └── README.md                     ← Feature tracking
+└── .env.test                         ← E2E test config
+```
+
+**`environment.test.ts` template:**
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api',
+  mockAuth: true,
+};
+```
+
+#### .NET Core
+
+```
+Files to create:
+├── tests/
+│   └── {Project}.Tests/
+│       ├── {Project}.Tests.csproj     ← Test project
+│       └── appsettings.Test.json      ← Test config
+├── .wiki/{feature}/
+│   ├── srs.md                         ← SRS template
+│   └── README.md                      ← Feature tracking
+└── .env.test                          ← Test credentials
+```
+
+**`appsettings.Test.json` template:**
+```json
+{
+  "ConnectionStrings": {
+    "Default": "Server=localhost;Database=TestDb;Trusted_Connection=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  }
+}
+```
+
+#### Node.js (Express/NestJS)
+
+```
+Files to create:
+├── jest.config.ts                     ← Jest config (if not exists)
+├── .wiki/{feature}/
+│   ├── srs.md                         ← SRS template
+│   └── README.md                      ← Feature tracking
+└── .env.test                          ← Test environment
+```
+
+**`jest.config.ts` template:**
+```typescript
+import type { Config } from 'jest';
+
+const config: Config = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/src'],
+  testMatch: ['**/*.spec.ts', '**/*.test.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts'],
+};
+
+export default config;
+```
+
+### 2.3 SRS Template (Shared Across All Stacks)
+
+**`.wiki/{feature}/srs.md` template:**
+
+```markdown
+# SRS: {Feature Name}
+
+## Overview
+[Brief description of the feature]
+
+## Basic Flows
+
+### BF1 — [Flow Name]
+- **Actor:** [User/Admin/System]
+- **Endpoint:** `[METHOD] /api/v1/[resource]`
+- **Input:** [Request body or params]
+- **Output:** [Expected response]
+- **Status:** [HTTP status code]
+
+## Business Rules
+
+### BR1 — [Rule Name]
+- **Condition:** [When this happens]
+- **Expected:** [System should do this]
+- **Error:** [Error message if violated]
+
+## Validation Rules
+
+| Field | Type | Required | Min | Max | Pattern | Error Message |
+|-------|------|----------|-----|-----|---------|---------------|
+| name | string | ✅ | 1 | 255 | — | "Tên không được để trống" |
+```
+
+### 2.4 Init Rules
+
+1. **NEVER overwrite** existing files — skip with `⚠️ Already exists: [file]`
+2. **Auto-detect `{feature}`** from `.wiki/` subdirectories or ask user
+3. **Add `.env.test` to `.gitignore`** if not already there
+4. **Monorepo:** run init per submodule, create shared `.env.test` at root
+5. **Report** what was created:
+
+```
+✅ Created: src/test/resources/application-test.yml
+✅ Created: .env.test
+✅ Created: .wiki/auth-feature/srs.md
+✅ Created: .wiki/auth-feature/README.md
+⚠️ Already exists: jest.config.ts (skipped)
+📝 Added .env.test to .gitignore
+```
+
+---
+
+## Phase 3: Run (Test Execution)
+
+### 3.1 Test Framework Detection (FIRST STEP)
 
 ```bash
 # Unit test framework?
@@ -52,94 +273,23 @@ ls .wiki/*/srs.md 2>/dev/null && echo "SRS_AVAILABLE"
 |---|---|
 | JUNIT / JS_TEST | Run existing test framework |
 | API_TESTS_EXIST | Run existing API test scripts |
-| SRS_AVAILABLE + no tests | Generate API test scripts from SRS using `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/api-test-runner]` |
-| Nothing found | Suggest: "Run `/wf_test_check` to diagnose what's missing for testing" |
+| SRS_AVAILABLE + no tests | Generate API test scripts from SRS using `api-test-runner` skill |
+| Nothing found | Run `check` sub-command automatically, then suggest `/wf_test init` |
 
----
-
-### Generate Tests — With Unit Test Framework
+### 3.2 Generate Tests — With Unit Test Framework
 
 When unit test framework exists:
 
-1. **Analyze the code**
-   - Identify functions and methods
-   - Find edge cases
-   - Detect dependencies to mock
+1. **Analyze the code** — functions, edge cases, dependencies
+2. **Generate test cases** — happy path, errors, edge cases
+3. **Write tests** — use project's framework, follow existing patterns, mock externals
 
-2. **Generate test cases**
-   - Happy path tests
-   - Error cases
-   - Edge cases
-   - Integration tests (if needed)
-
-3. **Write tests**
-   - Use project's test framework (Jest, Vitest, etc.)
-   - Follow existing test patterns
-   - Mock external dependencies
-
----
-
-## Output Format
-
-### For Test Generation
-
-```markdown
-## 🧪 Tests: [Target]
-
-### Test Plan
-| Test Case | Type | Coverage |
-|-----------|------|----------|
-| Should create user | Unit | Happy path |
-| Should reject invalid email | Unit | Validation |
-| Should handle db error | Unit | Error case |
-
-### Generated Tests
-
-`tests/[file].test.ts`
-
-[Code block with tests]
-
----
-
-Run with: `npm test`
-```
-
-### For Test Execution
-
-```
-🧪 Running tests...
-
-✅ auth.test.ts (5 passed)
-✅ user.test.ts (8 passed)
-❌ order.test.ts (2 passed, 1 failed)
-
-Failed:
-  ✗ should calculate total with discount
-    Expected: 90
-    Received: 100
-
-Total: 15 tests (14 passed, 1 failed)
-```
-
----
-
-## Examples
-
-```
-/wf_test                              - Run all tests
-/wf_test ngan-hang-thu-huong          - Generate/run API tests from SRS
-/wf_test src/services/auth.service.ts - Generate unit tests for specific file
-/wf_test coverage                     - Show test coverage report
-```
-
----
-
-### Generate Tests — Without Unit Test Framework (API Projects)
+### 3.3 Generate Tests — Without Unit Test (API Projects)
 
 When NO unit test framework exists but SRS is available:
 
 1. **Read SRS** from `.wiki/<name>/srs.md`
-2. **Read `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/api-test-runner]`** for full generation protocol
+2. **Read `api-test-runner` skill** for full generation protocol
 3. **Map SRS to test cases:**
 
    | SRS Section | Test Cases |
@@ -150,23 +300,19 @@ When NO unit test framework exists but SRS is available:
    | Error Messages | Assert exact error text from SRS |
 
 4. **Generate files:**
-   - `.wiki/<name>/api-tests.http` (human-readable documentation)
-   - `.wiki/<name>/api-tests.sh` (executable curl script)
+   - `.wiki/<name>/api-tests.http` (documentation)
+   - `.wiki/<name>/api-tests.sh` (executable script)
 
 5. **Run the generated script:**
    ```bash
    bash .wiki/<name>/api-tests.sh http://localhost:8080 admin admin123
    ```
 
-6. **Generate report** → jump to **Report Generation** section below
-
 ---
 
-## 📝 Report Generation (MANDATORY after every test run)
+## Phase 4: Report (MANDATORY after every test run)
 
-After ANY test execution (unit test, API test, or verification), generate `.wiki/<name>/report.md`.
-
-**If `<name>` is not available** (e.g., `/wf_test` without arguments), use the most recent `.wiki/*/` folder by modification time.
+After ANY test execution, generate `.wiki/<name>/report.md`.
 
 ### Report template:
 
@@ -194,17 +340,14 @@ After ANY test execution (unit test, API test, or verification), generate `.wiki
 |---|-----------|--------|---------|
 | 1 | Login | ✅ Pass | HTTP 200 |
 | 2 | BF1 - Search All | ✅ Pass | HTTP 200, returned 5 records |
-| 3 | BF2 - Create | ✅ Pass | HTTP 201 |
-| 4 | BR2 - Duplicate bankCode | ✅ Pass | HTTP 400, "Mã ngân hàng đã tồn tại" |
-| 5 | BR9 - Missing CITAD+NAPAS | ❌ Fail | HTTP 200 (expected 400) |
 
 ## Failed Tests Detail
 
-### ❌ BR9 - Missing CITAD+NAPAS
-- **Expected:** HTTP 400 with error message about CITAD
-- **Actual:** HTTP 200 (created without validation)
-- **Possible cause:** Missing validation in CreateBeneBankRequest
-- **Suggested fix:** Add @ValidCitadOrNapas constraint
+### ❌ [Test Name]
+- **Expected:** [what should happen]
+- **Actual:** [what happened]
+- **Possible cause:** [analysis]
+- **Suggested fix:** [recommendation]
 
 ## Environment
 
@@ -212,26 +355,18 @@ After ANY test execution (unit test, API test, or verification), generate `.wiki
 |-----|-------|
 | Base URL | http://localhost:8080 |
 | Auth | Session (JSESSIONID) |
-| User | admin |
-| Profile | local |
-
----
-*Previous reports are archived below*
 ```
 
 ### Report behavior:
-
 1. **First run:** Create new `report.md`
-2. **Subsequent runs:** Prepend new report at the top, move previous report under `## History` section with date header
-3. **Update `.wiki/<name>/README.md`** status:
-   - All passed → `## Status: ✅ Tests Passed (X/X)`
-   - Has failures → `## Status: ❌ Tests Failed (X/X passed)`
+2. **Subsequent runs:** Prepend new report, archive previous under `## History`
+3. **Update `.wiki/<name>/README.md`** status badge
 
 ---
 
 ## Test Patterns
 
-### Unit Test Structure
+### Unit Test Structure (AAA Pattern)
 
 ```typescript
 describe('AuthService', () => {
@@ -239,10 +374,10 @@ describe('AuthService', () => {
     it('should return token for valid credentials', async () => {
       // Arrange
       const credentials = { email: 'test@test.com', password: 'pass123' };
-      
+
       // Act
       const result = await authService.login(credentials);
-      
+
       // Assert
       expect(result.token).toBeDefined();
     });
@@ -250,7 +385,7 @@ describe('AuthService', () => {
     it('should throw for invalid password', async () => {
       // Arrange
       const credentials = { email: 'test@test.com', password: 'wrong' };
-      
+
       // Act & Assert
       await expect(authService.login(credentials)).rejects.toThrow('Invalid credentials');
     });
@@ -267,3 +402,20 @@ describe('AuthService', () => {
 - **Descriptive test names**
 - **Arrange-Act-Assert pattern**
 - **Mock external dependencies**
+- **Unit tests are OPTIONAL** — API test scripts are the primary test mechanism
+
+---
+
+## Examples
+
+```
+/wf_test                              Run all tests
+/wf_test check                        What's missing for testing?
+/wf_test check mcp                    Are MCP servers ready?
+/wf_test init                         Scaffold test files (auto-detect stack)
+/wf_test init spring                  Scaffold for Spring Boot
+/wf_test ngan-hang-thu-huong          Generate/run API tests from SRS
+/wf_test src/services/auth.service.ts Generate unit tests for specific file
+/wf_test coverage                     Show test coverage report
+/wf_test watch                        Watch mode
+```

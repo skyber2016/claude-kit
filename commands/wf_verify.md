@@ -58,7 +58,7 @@ RULES:
 2. "It should work" is NOT verification — run it
 3. Test error paths, not just success paths
 4. Report with actual command output as evidence
-5. If setup fails (missing config, MCP, deps) → suggest: "Run `/wf_test_check` to diagnose"
+5. If setup fails (missing config, MCP, deps) → suggest: "Run `/wf_test check` to diagnose"
 ```
 
 ---

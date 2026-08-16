@@ -26,8 +26,7 @@ description: Apply when you need a fast lookup of which agents, skills, commands
 | `/wf_orchestrate` | Multi-agent parallel execution | — |
 | `/wf_coordinate` | Cross-domain specialist routing | — |
 | `/wf_debug` | Systematic debugging | — |
-| `/wf_test` | TDD / test generation | — |
-| `/wf_test_check` | Pre-flight test readiness check | — |
+| `/wf_test` | Test: check, init, run, coverage, watch |
 | `/wf_deploy` | Deployment procedures | — |
 | `/wf_verify` | Verify by execution | — |
 | `/wf_preview` | Dev server management | — |
