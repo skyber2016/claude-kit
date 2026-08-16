@@ -13,7 +13,52 @@ $ARGUMENTS
 
 ---
 
-## 🔀 MANDATORY FIRST STEP: Repo Mode Detection
+## 🔀 MANDATORY FIRST STEP: Resume Detection
+
+Parse `$ARGUMENTS`:
+
+| Pattern | Action |
+|---------|--------|
+| `resume <name>` | → **RESUME Mode** — read `.wiki/<name>/README.md` progress, jump to next incomplete phase |
+| `<anything else>` | → Proceed to Repo Mode Detection below |
+
+### RESUME Mode
+
+**Trigger:** `/wf_fullstack resume <name>`
+
+1. **Read** `.wiki/<name>/README.md` → find `## Progress` section
+2. **Parse** checkboxes to determine last completed phase:
+
+```bash
+grep -n "\- \[x\]\|\- \[ \]" .wiki/<name>/README.md
+```
+
+3. **Jump** to the first unchecked `- [ ]` phase
+4. **Re-gather context** (run Phase 0 again — fast, parallel)
+5. **Announce:**
+```
+🔄 Resuming feature '<name>' from Phase X: <phase-name>
+
+Completed:
+✅ Phase 0: Context
+✅ Phase 1: Git Branch
+✅ Phase 2: Planning
+⬜ Phase 3: DB Schema ← resuming here
+⬜ Phase 4: API Contract
+⬜ Phase 5: Implementation
+⬜ Phase 6: Testing
+⬜ Phase 7: Final API
+⬜ Phase 8: Archive
+```
+
+6. **Continue** from that phase with fresh context
+
+> 🔴 **RULE:** ALWAYS re-run Phase 0 (Context Gathering) on resume.
+> Context is cheap, stale context is dangerous.
+
+---
+
+## 🔀 Repo Mode Detection
 
 ```bash
 git submodule status
@@ -162,6 +207,83 @@ WORKSPACE_CONTEXT = {
 ```
 
 > 🔴 **RULE:** When spawning any agent for a specific workspace (backend/frontend/db), ALWAYS pass that workspace's `llm` + `claude` context, NOT the root context. Root context is only fallback when workspace has no `llm-full.md`.
+
+---
+
+### 📊 Progress Tracker (MANDATORY — created in Phase 1)
+
+After creating the feature branch, **create or update** `.wiki/<feature-name>/README.md` with progress section:
+
+```markdown
+# <Feature Name>
+
+## Status: 🚧 In Progress
+
+## Progress
+
+- [x] Phase 0: Context Gathering
+- [x] Phase 1: Git Branch Setup
+- [ ] Phase 2: Planning
+- [ ] Phase 2.5: Tech Lead Review
+- [ ] Phase 3: Database Schema
+- [ ] Phase 4: API Contract (DRAFT)
+- [ ] Phase 5: Implementation (Backend + Frontend)
+- [ ] Phase 6: Testing
+- [ ] Phase 7: API Contract (FINAL)
+- [ ] Phase 8: Archive
+
+## Phase Log
+
+| Phase | Status | Timestamp | Commit |
+|-------|--------|-----------|--------|
+| Phase 0 | ✅ Done | YYYY-MM-DD HH:mm | — |
+| Phase 1 | ✅ Done | YYYY-MM-DD HH:mm | abc1234 |
+```
+
+> 🔴 **After EACH phase completes:**
+> 1. Update the checkbox: `- [ ]` → `- [x]`
+> 2. Add row to Phase Log table with timestamp and commit hash
+> 3. This enables `/wf_fullstack resume <name>` to detect where to continue
+
+---
+
+### 🔄 Auto-Commit Protocol (MANDATORY)
+
+> Commit after every phase that produces artifacts. This ensures progress is never lost
+> when user stops to switch model, takes a break, or session expires.
+
+| After Phase | Commit Message | What's committed |
+|-------------|---------------|------------------|
+| Phase 1 | `chore(<name>): init feature branch` | Branch setup, README progress |
+| Phase 2 | `docs(<name>): planning artifacts` | plan.md / OpenSpec proposal + specs + design + tasks |
+| Phase 2.5 | `docs(<name>): tech lead review` | review.md (if review was run) |
+| Phase 3 | `feat(<name>): database schema` | Migration files, db-spec |
+| Phase 4 | `docs(<name>): draft API contract` | openapi.yaml DRAFT |
+| Phase 5 | `feat(<name>): implementation` | Backend + Frontend code (per submodule) |
+| Phase 6 | `test(<name>): test results` | Test files, report.md |
+| Phase 7 | `docs(<name>): final API contract` | openapi.yaml FINAL |
+| Phase 8 | `chore(<name>): archive` | OpenSpec archive, final status |
+
+**Commit procedure (after each phase):**
+
+```bash
+# 1. Stage all changes
+git add -A
+
+# 2. Commit with phase-specific message
+git commit -m "<message from table above>"
+
+# 3. For monorepo — also commit in submodules if they changed
+git -C apps/backend add -A && git -C apps/backend commit -m "<message>" --allow-empty 2>/dev/null
+git -C apps/frontend add -A && git -C apps/frontend commit -m "<message>" --allow-empty 2>/dev/null
+
+# 4. Update root to track submodule commits
+git add apps/backend apps/frontend
+git commit --amend --no-edit 2>/dev/null
+```
+
+> 💡 **Why commit after every phase?** User may stop at any point to switch model.
+> Without commits, all work in that session is lost. Commits = save points.
 
 ---
 
@@ -552,17 +674,17 @@ Agent(api-contract): "Generate FINAL openapi.yaml for feature '<feature-name>' f
 ```bash
 # Archive OpenSpec change (if SDD_MODE)
 openspec archive --change "<feature-name>"
+```
 
-# Commit all changes
-git -C apps/backend add -A
-git -C apps/backend commit -m "feat(<feature-name>): implement backend"
+**Update `.wiki/<feature-name>/README.md`:**
+- Mark `- [x] Phase 8: Archive`
+- Change `## Status: 🚧 In Progress` → `## Status: ✅ Complete`
+- Add final row to Phase Log
 
-git -C apps/frontend add -A
-git -C apps/frontend commit -m "feat(<feature-name>): implement frontend"
-
-# Update root to track new submodule commits
-git add apps/backend apps/frontend
-git commit -m "feat(<feature-name>): complete full-stack implementation"
+**Auto-commit** (follow Auto-Commit Protocol):
+```bash
+git add -A && git commit -m "chore(<feature-name>): archive"
+# + submodule commits per protocol
 ```
 
 Announce:
@@ -576,6 +698,7 @@ Announce:
 - Backend: apps/backend — <N> endpoints implemented
 - Frontend: apps/frontend — <N> components created
 - Tests: Backend ✅/❌ | Frontend ✅/❌ | E2E ✅/❌
+- Commits: <N> phase commits on feature branch
 
 Next steps:
 1. Review changes: git diff main feature/<feature-name>
@@ -593,6 +716,9 @@ Next steps:
 
 # Full-stack with description
 /wf_fullstack add user management module
+
+# Resume after switching model (reads progress from README.md)
+/wf_fullstack resume ngan-hang-thu-huong
 
 # Auto-detect and proceed
 /wf_fullstack
