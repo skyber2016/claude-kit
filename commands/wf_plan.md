@@ -1,9 +1,9 @@
 ---
 name: wf_plan
-description: "Create project plan. Supports init, export subcommands. Auto-detects OpenSpec for structured spec-driven planning or classic plan.md."
-version: 3.0.0
+description: "Create project plan. Supports init, export, review subcommands. Auto-detects OpenSpec for structured spec-driven planning or classic plan.md."
+version: 4.0.0
 requires_agents: project-planner
-requires_skills: plan-writing, architecture
+requires_skills: plan-writing, architecture, openspec-review
 artifact_outputs: implementation-plan
 ---
 
@@ -48,6 +48,7 @@ Parse `$ARGUMENTS` to determine the subcommand:
 |---|---|---|
 | `init <name>` | **INIT** | Scaffold SRS folder → jump to **INIT Mode** |
 | `export <name>` | **EXPORT** | Generate api-contract.md → jump to **EXPORT Mode** |
+| `review <name>` | **REVIEW** | Tech lead review gate → jump to **REVIEW Mode** |
 | `<anything else>` | **PLAN** | Create plan → jump to **PLAN Mode** |
 
 ---
@@ -307,6 +308,7 @@ Update README.md status to `## Status: ✅ Planned`
 
 Next steps:
 - Review the artifacts above
+- [Optional] Run /wf_plan review <name> — tech lead review gate (6-lens analysis + pre-mortem)
 - [Backend project] Run /wf_api_contract <name> để tạo DRAFT openapi.yaml từ specs
 - Run /wf_create to start implementation
 - Or /wf_plan <name> again to revise
@@ -316,25 +318,93 @@ Update README.md status to `## Status: ✅ Planned (SDD)`
 
 ---
 
+## 🔍 REVIEW Mode — Tech Lead Review Gate (Optional)
+
+**Trigger:** `/wf_plan review <name>`
+
+**Example:** `/wf_plan review ngan-hang-thu-huong`
+
+> **This is OPTIONAL.** User decides whether to run review before implementation.
+> Useful for complex features, critical business logic, or when multiple people collaborate.
+
+### Purpose
+
+Senior tech lead + architect review of all OpenSpec artifacts BEFORE implementation.
+Challenges whether the design is worth implementing. **Read-only — never modifies files.**
+
+### Prerequisites
+
+| File | Required |
+|------|----------|
+| `openspec/changes/<name>/proposal.md` | ✅ Yes |
+| `openspec/changes/<name>/tasks.md` | ✅ Yes |
+| `openspec/changes/<name>/design.md` | If exists |
+| `openspec/changes/<name>/specs/*.md` | If exist |
+
+If `proposal.md` or `tasks.md` missing → `⛔ Cannot review. Run /wf_plan <name> first.`
+
+### Steps
+
+📚 Using skill: `openspec-review`
+
+**Read `skills/openspec-review/SKILL.md`** and follow full protocol:
+
+1. **Load all artifacts** in order (proposal → design → tasks → specs)
+2. **Run 6-lens analysis:**
+
+   | Lens | Question |
+   |------|----------|
+   | 1: Problem-Solution Fit | Right problem? Alternatives considered? |
+   | 2: Design Soundness | Will it work? One-way doors identified? |
+   | 3: Best Practices | Error handling, security, observability? |
+   | 4: Over-Engineering | YAGNI violations? Gold-plating? |
+   | 5: Task & Test Quality | Implementable? Gates at right places? |
+   | 6: Gap Detection | Operational readiness? Blast radius? |
+
+3. **Pre-mortem** — 3 failure scenarios ("6 months from now, this failed. Why?")
+4. **Socratic openings** — 3-5 genuine questions surfacing unstated assumptions
+5. **Verdict:**
+
+   | Verdict | Meaning | Next |
+   |---------|---------|------|
+   | **READY** | No critical findings | → `/wf_create <name>` |
+   | **READY WITH CAVEATS** | Major findings to address | → Fix, then `/wf_create` |
+   | **NOT READY** | Critical findings block | → Fix, then `/wf_plan review` |
+   | **RETHINK** | Problem-solution fit questioned | → `/wf_plan <name>` |
+
+### Output
+
+Review report saved to `openspec/changes/<name>/review.md`
+
+### When to Use
+
+| Scenario | Recommendation |
+|----------|---------------|
+| Complex business logic | ✅ Run review |
+| Critical security/payment features | ✅ Run review |
+| Simple CRUD feature | ⚪ Skip — go straight to `/wf_create` |
+| Solo developer, fast iteration | ⚪ Skip — review adds latency |
+| Team collaboration, PR-based | ✅ Run review |
+
+---
+
 ## Examples
 
 ```
 # Scaffold SRS folder:
 /wf_plan init ngan-hang-thu-huong
-/wf_plan init quan-ly-khach-hang
-/wf_plan init chuyen-khoan-napas
 
 # Plan after SRS is ready:
 /wf_plan ngan-hang-thu-huong
-/wf_plan quan-ly-khach-hang
+
+# Review plan before implementing (optional):
+/wf_plan review ngan-hang-thu-huong
 
 # Plan without SRS (classic):
 /wf_plan add dark mode feature
-/wf_plan SaaS dashboard with analytics
 
 # Export API contract after backend implementation:
 /wf_plan export ngan-hang-thu-huong
-/wf_plan export quan-ly-khach-hang
 ```
 
 ---
@@ -346,14 +416,17 @@ Update README.md status to `## Status: ✅ Planned (SDD)`
     ↓ User downloads SRS vào .wiki/ngan-hang-thu-huong/srs.md
 /wf_plan ngan-hang-thu-huong
     ↓ Claude reads SRS → creates plan/specs
-/wf_api_contract ngan-hang-thu-huong      ← DRAFT openapi.yaml (Frontend bắt đầu mock)
+/wf_plan review ngan-hang-thu-huong        ← [Optional] Tech lead review gate
+    ↓
+/wf_api_contract ngan-hang-thu-huong       ← DRAFT openapi.yaml (Frontend bắt đầu mock)
     ↓
 /wf_create ngan-hang-thu-huong
     ↓ Implement Backend
 /wf_api_contract export ngan-hang-thu-huong  ← FINAL openapi.yaml (validated from code)
     ↓ Share openapi.yaml sang Frontend project
-/wf_verify
+/wf_test check
 /wf_test
+/wf_verify
 ```
 
 ---
