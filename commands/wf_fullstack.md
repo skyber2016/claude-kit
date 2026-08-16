@@ -1,9 +1,9 @@
 ---
 name: wf_fullstack
 description: "Full-stack monorepo development workflow. Orchestrates the complete SDLC: git branch → database schema → planning → API contract → backend + frontend (parallel) → testing → archive. Auto-detects monorepo via git submodule. Falls back to single-repo mode."
-version: 1.0.0
+version: 2.0.0
 requires_agents: orchestrator, backend-specialist, frontend-specialist, database-architect, api-contract, test-engineer, devops-engineer
-requires_skills: monorepo-patterns, openapi-contract, plan-writing, parallel-agents
+requires_skills: monorepo-patterns, openapi-contract, plan-writing, parallel-agents, openspec-review
 artifact_outputs: feature-branch, db-schema, openapi-contract, implementation, test-report
 ---
 
@@ -36,11 +36,12 @@ Announce detected mode:
 
 ```
 1. Run /wf_plan <arguments>          ← Create plan/specs
-2. Run /wf_api_contract <name>       ← DRAFT openapi.yaml from plan
-3. Run /wf_create <name>             ← Implement (backend then frontend)
-4. Run /wf_verify                    ← Verify
-5. Run /wf_test                      ← Test
-6. Run /wf_remember                  ← Archive
+2. Run /wf_plan review <name>        ← [Optional] Tech lead review gate
+3. Run /wf_api_contract <name>       ← DRAFT openapi.yaml from plan
+4. Run /wf_create <name>             ← Implement (backend then frontend)
+5. Run /wf_verify                    ← Verify
+6. Run /wf_test                      ← Test
+7. Run /wf_remember                  ← Archive
 ```
 
 Announce: `"📦 Single repo — running standard workflow. Start with /wf_plan <name>."`
@@ -274,10 +275,39 @@ Delegate to existing `wf_plan` logic:
    - design.md ✅
    - tasks.md ✅
 
-   ⚠️ CHECKPOINT: Review specs before proceeding to implementation? (Y/N)
+   ⚠️ CHECKPOINT: Review specs before proceeding? (Y/N/review)
+   - Y → proceed to Phase 3
+   - N → abort
+   - review → run tech lead review first, then proceed
    ```
 
 > 🔴 **DO NOT proceed to Phase 3 without checkpoint confirmation.**
+
+### 🔍 Phase 2.5: Tech Lead Review (Optional — user triggered)
+
+> **Trigger:** User responds `review` at the Phase 2 checkpoint.
+> **Skip:** If user responds `Y` — go straight to Phase 3.
+
+📚 Using skill: `openspec-review`
+
+If SDD_MODE and user chose `review`:
+
+```
+Agent(general-purpose): "Run tech lead review for OpenSpec change '<name>'.
+  Read skills/openspec-review/SKILL.md and follow full protocol.
+  Load artifacts: openspec/changes/<name>/proposal.md, design.md, tasks.md, specs/*.md
+  Run 6-lens analysis, pre-mortem, Socratic openings.
+  Output verdict: READY / READY WITH CAVEATS / NOT READY / RETHINK.
+  Save report to openspec/changes/<name>/review.md
+  DO NOT modify any artifact files — read-only review."
+```
+
+| Verdict | Action |
+|---------|--------|
+| **READY** | → Proceed to Phase 3 |
+| **READY WITH CAVEATS** | → Show findings, ask user to confirm proceed or fix |
+| **NOT READY** | → Show critical findings, return to Phase 2 for revision |
+| **RETHINK** | → Abort, suggest `/wf_plan <name>` to re-plan |
 
 ---
 
@@ -582,6 +612,7 @@ Next steps:
     ├── Phase 0: Context (4 parallel agents)
     ├── Phase 1: Git branch (sequential + checkpoint ✋)
     ├── Phase 2: Planning (CLASSIC: plan.md / SDD: OpenSpec + domain specs + checkpoint ✋)
+    ├── Phase 2.5: Tech Lead Review (optional — user chooses at checkpoint)
     ├── Phase 3: DB Schema (sequential)
     ├── Phase 4: DRAFT API Contract (sequential, fast)
     ├── Phase 5: Backend + Frontend + DBA (FULL PARALLEL 🚀)

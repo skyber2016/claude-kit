@@ -347,7 +347,7 @@ If `proposal.md` or `tasks.md` missing → `⛔ Cannot review. Run /wf_plan <nam
 
 📚 Using skill: `openspec-review`
 
-**Read `skills/openspec-review/SKILL.md`** and follow full protocol:
+**Read `~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/openspec-review/SKILL.md`** and follow full protocol:
 
 1. **Load all artifacts** in order (proposal → design → tasks → specs)
 2. **Run 6-lens analysis:**
