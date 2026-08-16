@@ -1,4 +1,4 @@
-﻿---
+---
 name: brainstorming
 description: Socratic questioning protocol + user communication. MANDATORY for complex requests, new features, or unclear requirements. Includes progress reporting and error handling.
 when_to_use: "When exploring options before implementation, clarifying requirements, or when the user needs creative problem-solving. Use with /brainstorm workflow."
@@ -34,16 +34,44 @@ version: 1.0.0
    → NO: Proceed with standard Socratic Gate.
 ```
 
-### 🚫 MANDATORY: 3 Questions Before Implementation
+### 🚫 MANDATORY: 5 Steps Before Implementation
 
 1. **STOP** - Do NOT start coding
 2. **CHECK** - Read `memory/` for past context on this topic
-3. **ASK** - Minimum 3 questions (skip any already answered via memory):
+3. **DISCOVER** - For **FEATURE ADDITION** on existing codebase (skip for greenfield):
+   - 🔍 **Find similar features** already implemented in the codebase
+   - 📋 **Extract patterns** from constants, configs, enums, routes, permissions
+   - 📌 **Lock patterns** — document them as CONSTRAINTS the plan MUST follow
+   - ⚠️ **NEVER invent new values** for things that have existing conventions
+
+   **Tool Priority (MCP-first, grep fallback):**
+
+   | Priority | Tool | Use For |
+   |----------|------|---------|
+   | 1st | `search_graph(name_pattern=".*Pattern.*")` | Find functions, classes, constants by name |
+   | 2nd | `get_code_snippet(qualified_name="...")` | Read exact source of discovered patterns |
+   | 3rd | `query_graph(cypher="MATCH ...")` | Complex pattern queries (e.g. all constants in module) |
+   | 4th | `trace_path(function_name="...", direction="inbound")` | Trace who uses a pattern |
+   | Fallback | `grep -r "PATTERN" --include="*.ts"` | When MCP returns insufficient results |
+   | Fallback | `glob "src/**/*.constants.*"` | Finding files by naming convention |
+
+   > 🔴 **RULE:** If you cannot cite a `file:line` as evidence for a pattern,
+   > **DO NOT invent values.** Instead, generate a CLI-style question to ask the user:
+   > ```
+   > ? Không tìm thấy convention [PATTERN_TYPE] trong codebase.
+   >   Bạn muốn dùng convention nào?
+   >   › 1. [Option A with example]
+   >     2. [Option B with example]
+   >     3. [Option C with example]
+   >     4. Khác (mô tả thêm)
+   > ```
+
+4. **ASK** - Minimum 3 questions (skip any already answered via memory):
    - 🎯 Purpose: What problem are you solving?
    - 👥 Users: Who will use this?
    - 📦 Scope: Must-have vs nice-to-have?
-4. **WAIT** - Get response before proceeding
-5. **SAVE** - After brainstorming, save key decisions: `/remember [decision]`
+5. **WAIT** - Get response before proceeding
+6. **SAVE** - After brainstorming, save key decisions: `/remember [decision]`
 
 ---
 
@@ -89,6 +117,71 @@ version: 1.0.0
 ```
 
 **For detailed domain-specific question banks and algorithms**, see: `dynamic-questioning.md`
+
+---
+
+## 🔒 Evidence-Based Planning (Anti-Hallucination)
+
+> **PRINCIPLE:** When adding features to existing codebases, the plan MUST be grounded
+> in observed patterns, not imagined ones.
+
+### 🔴 MANDATORY for Feature Addition / Enhancement
+
+Before writing ANY task that references:
+- Constants, enums, config values
+- API endpoints, route patterns
+- File naming conventions
+- Permission/privilege structures
+- Database table/column naming
+
+**YOU MUST discover the existing pattern first:**
+
+| Step | Action | MCP Tool (Primary) | Fallback Tool |
+|------|--------|--------------------|---------------|
+| 1 | **Find existing examples** | `search_graph(name_pattern=".*Privilege.*")` | `grep -r "PRIVILEGE" --include="*.ts" .` |
+| 2 | **Read source of pattern** | `get_code_snippet(qualified_name="auth.privileges")` | `view_file` on matched files |
+| 3 | **Trace usage across codebase** | `trace_path(function_name="checkPrivilege", direction="inbound")` | `grep -r "checkPrivilege" .` |
+| 4 | **Query structural patterns** | `query_graph(cypher="MATCH (n:Constant) RETURN n")` | `glob "src/**/*.constants.*"` |
+
+> 🔴 **MCP Priority Rule:** Always try `search_graph` → `get_code_snippet` → `query_graph` → `trace_path` BEFORE falling back to grep/glob.
+> Only use grep/glob when: MCP returns empty results, searching non-code files, or searching string literals/error messages.
+
+### Evidence Block Format (MANDATORY in plan.md)
+
+Every plan task that creates or references constants, configs, routes, or permissions
+MUST include an evidence block:
+
+```markdown
+<!-- EVIDENCE -->
+Pattern Source: `src/auth/privileges.ts:L42-L58`
+Discovery Tool: search_graph(name_pattern=".*PRIVILEGE.*")
+Existing Values: ADMIN_READ, ADMIN_WRITE, USER_READ, USER_WRITE
+Convention: {MODULE}_{ACTION} (UPPER_SNAKE_CASE)
+New Values (derived): REPORT_READ, REPORT_WRITE, REPORT_DELETE
+<!-- /EVIDENCE -->
+```
+
+### 🚫 Hallucination Self-Check
+
+| If you wrote... | Verification | Action if FAILED |
+|----------------|--------------|------------------|
+| A constant/enum value | Did `search_graph` or grep find similar constants? | Retry MCP → grep → **ASK user CLI question** |
+| An API path | Does it match the routing pattern from `get_architecture`? | Retry MCP → grep → **ASK user CLI question** |
+| A config key | Is there a config file with similar keys? | Retry MCP → grep → **ASK user CLI question** |
+| A DB column name | Does it follow the naming convention from migrations? | Retry MCP → grep → **ASK user CLI question** |
+| A privilege/permission | Does it follow the `{MODULE}_{ACTION}` pattern from existing code? | Retry MCP → grep → **ASK user CLI question** |
+
+> 🔴 **ABSOLUTE RULE:** If you cannot cite a `file:line` as evidence for a pattern,
+> **DO NOT invent values.** Generate a CLI-style question instead:
+> ```
+> ? Không tìm thấy [PATTERN_TYPE] convention trong codebase.
+>   Bạn muốn dùng convention nào cho [FEATURE]?
+>   › 1. [Option A with concrete example]
+>     2. [Option B with concrete example]
+>     3. [Option C with concrete example]
+>     4. Khác (mô tả thêm)
+> ```
+> **"No evidence = ask user, never invent."**
 
 ---
 
