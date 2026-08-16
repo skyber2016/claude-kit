@@ -53,7 +53,7 @@ ls .wiki/*/srs.md 2>/dev/null && echo "SRS_AVAILABLE"
 | JUNIT / JS_TEST | Run existing test framework |
 | API_TESTS_EXIST | Run existing API test scripts |
 | SRS_AVAILABLE + no tests | Generate API test scripts from SRS using `@[~/.claude/plugins/marketplaces/claude-kit-marketplace/skills/api-test-runner]` |
-| Nothing found | Ask user what to test |
+| Nothing found | Suggest: "Run `/wf_test_check` to diagnose what's missing for testing" |
 
 ---
 
